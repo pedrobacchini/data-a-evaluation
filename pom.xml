@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.pedrobacchini</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>data-a-evaluation</artifactId>
     <version>1.0.0</version>
-    <name>parent</name>
+    <name>data-a-evaluation</name>
     <packaging>pom</packaging>
 
     <modules>

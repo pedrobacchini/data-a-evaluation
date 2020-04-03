@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.pedrobacchini</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>data-a-evaluation</artifactId>
         <version>1.0.0</version>
     </parent>
     <artifactId>back-end</artifactId>
@@ -107,7 +107,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
-                    <warName>parent</warName>
+                    <warName>data-a-evaluation</warName>
                 </configuration>
             </plugin>
         </plugins>
