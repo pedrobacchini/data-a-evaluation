@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+import { MessageService } from 'primeng/components/common/api';
+
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
-import { MessageService } from 'primeng/api';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-election-form',

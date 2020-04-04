@@ -11,8 +11,8 @@ import java.util.Locale;
 @Component
 public class LocaleMessageSource {
 
-    //    private static final Locale DEFAULT_LOCALE = new Locale("pt", "BR");
-    private static final Locale DEFAULT_LOCALE = Locale.US;
+        private static final Locale DEFAULT_LOCALE = new Locale("pt", "BR");
+//    private static final Locale DEFAULT_LOCALE = Locale.US;
     private final MessageSource messageSource;
 
     public LocaleMessageSource(MessageSource messageSource) { this.messageSource = messageSource; }

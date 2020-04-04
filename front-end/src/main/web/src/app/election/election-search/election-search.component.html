@@ -4,30 +4,37 @@
       <h1>Eleições</h1>
       <div class="ui-g">
         <div class="ui-g-12">
-          <p-table #dt [columns]="cols" [value]="elections">
+          <p-table #dt [columns]="cols" [value]="electionsAtTheTable()">
             <ng-template pTemplate="caption">
               <div style="text-align: right">
                 <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
                 <!--suppress HtmlFormInputWithoutLabel -->
-                <input type="text" pInputText size="10" placeholder="Pesquisar..."
-                       (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                <input (input)="dt.filterGlobal($event.target.value, 'contains')" pInputText placeholder="Pesquisar..."
+                       size="10"
+                       style="width:auto" type="text">
               </div>
             </ng-template>
-            <ng-template pTemplate="header" let-columns>
+            <ng-template let-columns pTemplate="header">
               <tr>
                 <th *ngFor="let col of columns">
                   {{col.header}}
                 </th>
+                <th>Ações</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <ng-template let-columns="columns" let-rowData pTemplate="body">
               <tr [pSelectableRow]="rowData">
                 <td *ngFor="let col of columns">
                   {{rowData[col.field]}}
                 </td>
+                <td class="col-acoes">
+                  <button icon="pi pi-pencil" pButton pTooltip="Editar" tooltipPosition="top"></button>
+                  <button (click)="confirmDelete(rowData)" icon="pi pi-trash" pButton pTooltip="Excluir"
+                          tooltipPosition="top"></button>
+                </td>
               </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage" let-columns>
+            <ng-template let-columns pTemplate="emptymessage">
               <tr>
                 <td [attr.colspan]="columns.length">
                   <b>Nenhuma Eleição encontrada...</b>
@@ -35,7 +42,7 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">
-              {{elections ? elections.length : 0}} Eleições
+              {{elections ? elections.size : 0}} Eleições
             </ng-template>
           </p-table>
         </div>

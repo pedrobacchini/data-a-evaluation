@@ -1,12 +1,30 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ErrorHandlerService} from './error-handler.service';
-import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { GrowlModule } from 'primeng/components/growl/growl';
+import { ConfirmationService, MessageService } from 'primeng/components/common/api';
+import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
+
+import { ErrorHandlerService } from './error-handler.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [PageNotFoundComponent],
-  imports: [CommonModule],
-  providers: [ErrorHandlerService]
+  imports: [
+    CommonModule,
+
+    GrowlModule,
+    ConfirmDialogModule
+  ],
+  exports: [
+    GrowlModule,
+    ConfirmDialogModule
+  ],
+  providers: [
+    ConfirmationService,
+    ErrorHandlerService,
+    MessageService
+  ]
 })
 export class CoreModule {
 }

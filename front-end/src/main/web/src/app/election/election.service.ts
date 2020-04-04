@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Election } from './election.class';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+
+import { Election } from './election.class';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,9 @@ export class ElectionService {
 
   getAll(): Observable<Election[]> {
     return this.http.get<Election[]>(this.electionUrl);
+  }
+
+  delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.electionUrl}/${uuid}`);
   }
 }

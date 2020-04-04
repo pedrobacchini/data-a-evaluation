@@ -1,5 +1,5 @@
 <div class="container">
-  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+  <form #f="ngForm" (ngSubmit)="save(f)" autocomplete="off">
     <div class="ui-g">
       <div class="ui-g-12">
         <h1>Nova Eleição</h1>
@@ -8,24 +8,25 @@
       <div class="ui-g-8 ui-g-nopad">
         <div class="ui-g-12 ui-fluid">
           <label>Name
-            <input pInputText type="text" name="name" [(ngModel)]="election.name" #name="ngModel" required>
+            <input [(ngModel)]="election.name" name="name" pInputText required type="text">
           </label>
         </div>
 
         <div class="ui-g-12">
           <label style="display: block">Período</label>
-          <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
-                      name="startDate" [(ngModel)]="election.startDate" required></p-calendar>
+          <p-calendar [(ngModel)]="election.startDate" [inputStyle]="{ width: '95px' }"
+                      dateFormat="dd/mm/yy" name="startDate" required></p-calendar>
 
           <label> até </label>
-          <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
-                      name="finishDate" [(ngModel)]="election.finishDate" required></p-calendar>
+          <p-calendar [(ngModel)]="election.finishDate" [inputStyle]="{ width: '95px' }"
+                      dateFormat="dd/mm/yy" name="finishDate" required></p-calendar>
         </div>
       </div>
 
       <div class="ui-g-8">
-        <button class="button-pad" pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
-        <button class="button-pad" pButton type="button" label="Limpar" [disabled]="f.pristine" (click)="new(f)"></button>
+        <button [disabled]="f.invalid" class="button-pad" label="Salvar" pButton type="submit"></button>
+        <button (click)="new(f)" [disabled]="f.pristine" class="button-pad" label="Limpar" pButton
+                type="button"></button>
       </div>
     </div>
   </form>

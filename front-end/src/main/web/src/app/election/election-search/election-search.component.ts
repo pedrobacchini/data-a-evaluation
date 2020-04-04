@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
+import { ConfirmationService, MessageService } from 'primeng/components/common/api';
+
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
@@ -10,14 +13,18 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionSearchComponent implements OnInit {
 
-  elections: Election[];
+  elections = new Map<string, Election>();
   cols: any[];
 
   constructor(private electionService: ElectionService,
-              private errorHandler: ErrorHandlerService) {
+              private errorHandler: ErrorHandlerService,
+              private messageService: MessageService,
+              private confirmation: ConfirmationService) {
     this.electionService.getAll()
       .subscribe(elections => {
-        this.elections = elections;
+        elections.map(election => {
+          this.elections.set(election.uuid, election);
+        });
       }, exception => this.errorHandler.handle(exception));
   }
 
@@ -30,6 +37,23 @@ export class ElectionSearchComponent implements OnInit {
   }
 
   addElection(newElection: Election) {
-    this.elections.push(newElection);
+    this.elections.set(newElection.uuid, newElection);
+  }
+
+  confirmDelete(election: Election) {
+    this.confirmation.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.electionService.delete(election.uuid)
+          .subscribe(() => {
+            this.elections.delete(election.uuid);
+            this.messageService.add({severity: 'success', detail: 'Removido com sucesso'});
+          }, exception => this.errorHandler.handle(exception));
+      }
+    });
+  }
+
+  electionsAtTheTable() {
+    return Array.from(this.elections.values());
   }
 }
