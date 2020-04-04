@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
 import { MessageService } from 'primeng/api';
@@ -13,6 +13,7 @@ import { NgForm } from '@angular/forms';
 export class ElectionFormComponent implements OnInit {
 
   election: Election = new Election();
+  @Output() newElection: EventEmitter<Election> = new EventEmitter();
 
   constructor(private electionService: ElectionService,
               private messageService: MessageService,
@@ -26,6 +27,7 @@ export class ElectionFormComponent implements OnInit {
     this.electionService.save(this.election)
       .subscribe(election => {
         f.reset();
+        this.newElection.emit(election);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
       }, exception => this.errorHandler.handle(exception));
   }

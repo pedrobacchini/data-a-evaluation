@@ -29,4 +29,7 @@ export class ElectionSearchComponent implements OnInit {
     ];
   }
 
+  addElection(newElection: Election) {
+    this.elections.push(newElection);
+  }
 }
