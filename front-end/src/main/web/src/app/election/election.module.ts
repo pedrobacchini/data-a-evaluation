@@ -8,9 +8,14 @@ import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
 
 
 @NgModule({
+  declarations: [
+    ElectionSearchComponent,
+    ElectionFormComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,15 +24,8 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     ButtonModule,
     TableModule,
-    DropdownModule
-  ],
-  exports: [
-    ElectionSearchComponent,
-    ElectionFormComponent
-  ],
-  declarations: [
-    ElectionSearchComponent,
-    ElectionFormComponent
+    DropdownModule,
+    CalendarModule,
   ]
 })
 export class ElectionModule {

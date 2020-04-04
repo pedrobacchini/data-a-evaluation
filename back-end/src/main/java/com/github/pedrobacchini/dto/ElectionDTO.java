@@ -1,6 +1,5 @@
 package com.github.pedrobacchini.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pedrobacchini.constraint.FromDataBeforeToDate;
 import lombok.Getter;
 
@@ -18,11 +17,9 @@ public class ElectionDTO {
 
     @NotNull
     @Future
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
 
     @NotNull
     @Future
-    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate finishDate;
 }

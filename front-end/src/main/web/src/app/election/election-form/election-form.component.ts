@@ -1,9 +1,9 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
 import { MessageService } from 'primeng/api';
 import { ErrorHandlerService } from '../../core/error-handler.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-election-form',
@@ -25,12 +25,12 @@ export class ElectionFormComponent implements OnInit {
   save(f: NgForm) {
     this.electionService.save(this.election)
       .subscribe(election => {
-        this.election = election;
+        f.reset();
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
       }, exception => this.errorHandler.handle(exception));
   }
 
   new(f: NgForm) {
-
+    f.reset();
   }
 }
