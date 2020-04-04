@@ -15,6 +15,10 @@ export class ElectionService {
     this.electionUrl = `${environment.apiUrl}/elections`;
   }
 
+  save(election: Election): Observable<Election> {
+    return this.http.post<Election>(this.electionUrl, election);
+  }
+
   getAll(): Observable<Election[]> {
     return this.http.get<Election[]>(this.electionUrl);
   }

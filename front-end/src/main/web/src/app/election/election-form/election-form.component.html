@@ -1,3 +1,36 @@
-<p>
-  election-form works!
-</p>
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>Cadastrar Eleição</h1>
+      </div>
+
+      <div class="ui-g-8 ui-g-nopad">
+        <div class="ui-g-12 ui-fluid">
+          <label>Name
+            <input pInputText type="text" name="name" [(ngModel)]="election.name" #name="ngModel" required
+                   minlength="5">
+          </label>
+        </div>
+
+        <div class="ui-g-6 ui-fluid">
+          <label>Data Inicial
+            <input pInputText type="text" name="startDate" [(ngModel)]="election.startDate" #startDate="ngModel"
+                   required>
+          </label>
+        </div>
+
+        <div class="ui-g-6 ui-fluid">
+          <label>Data Final
+            <input pInputText type="text" name="finishDate" [(ngModel)]="election.finishDate" #finishDate="ngModel">
+          </label>
+        </div>
+      </div>
+
+      <div class="ui-g-8">
+        <button pButton type="submit" label="Save" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="New" (click)="new(f)"></button>
+      </div>
+    </div>
+  </form>
+</div>

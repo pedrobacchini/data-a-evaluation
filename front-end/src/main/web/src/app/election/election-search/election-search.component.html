@@ -1,4 +1,4 @@
-<!--<app-election-form></app-election-form>-->
+<app-election-form></app-election-form>
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
@@ -9,6 +9,7 @@
             <ng-template pTemplate="caption">
               <div style="text-align: right">
                 <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                <!--suppress HtmlFormInputWithoutLabel -->
                 <input type="text" pInputText size="50" placeholder="Pesquisar..."
                        (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
               </div>

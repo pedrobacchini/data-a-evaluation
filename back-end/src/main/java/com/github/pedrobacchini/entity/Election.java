@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,10 +31,12 @@ public class Election implements Serializable {
     private String name;
 
     @Setter
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "start_date")
     private LocalDate startDate;
 
     @Setter
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "finish_date")
     private LocalDate finishDate;
 
