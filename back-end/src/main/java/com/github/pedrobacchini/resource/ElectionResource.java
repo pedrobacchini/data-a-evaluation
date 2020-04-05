@@ -28,15 +28,15 @@ public class ElectionResource {
 
     @GetMapping(path = "/{uuid}")
     public ResponseEntity<Election> getById(@PathVariable("uuid") String uuid) {
-        Election client = electionService.getById(UUID.fromString(uuid));
-        return ResponseEntity.ok(client);
+        Election election = electionService.getById(UUID.fromString(uuid));
+        return ResponseEntity.ok(election);
     }
 
     @PostMapping
     public ResponseEntity<Election> create(@RequestBody @Valid ElectionDTO electionDTO, HttpServletResponse response) {
-        Election createdClient = electionService.create(fromDTO(electionDTO));
-        publisher.publishEvent(new ResourceCreatedEvent(this, response, createdClient.getUuid()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
+        Election createdElection = electionService.create(fromDTO(electionDTO));
+        publisher.publishEvent(new ResourceCreatedEvent(this, response, createdElection.getUuid()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdElection);
     }
 
     @PutMapping(value = "/{uuid}")
