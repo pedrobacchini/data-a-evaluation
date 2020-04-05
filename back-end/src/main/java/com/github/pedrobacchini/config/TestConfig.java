@@ -1,6 +1,8 @@
 package com.github.pedrobacchini.config;
 
 import com.github.pedrobacchini.entity.Election;
+import com.github.pedrobacchini.entity.ElectionPosition;
+import com.github.pedrobacchini.repository.ElectionPositionRepository;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 public class TestConfig {
 
     private final ElectionRepository electionRepository;
+    private final ElectionPositionRepository electionPositionRepository;
 
     @Bean
     public boolean instantiateDatabase() {
@@ -27,6 +30,12 @@ public class TestConfig {
                 LocalDate.of(2020, 3, 31), LocalDate.of(2020, 4, 20));
 
         electionRepository.saveAll(Arrays.asList(election2020, electionLeadProgrammer));
+
+        ElectionPosition president = new ElectionPosition("President");
+
+        ElectionPosition leader = new ElectionPosition("Leader");
+
+        electionPositionRepository.saveAll(Arrays.asList(president, leader));
 
         return true;
     }
