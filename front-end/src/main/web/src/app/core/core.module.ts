@@ -7,7 +7,7 @@ import { ConfirmationService, MessageService } from 'primeng/components/common/a
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 
 import { ErrorHandlerService } from './error-handler.service';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './page-not-found.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './core/page-not-found.component';
 import { ElectionSearchComponent } from './election/election-search/election-search.component';
 import { CandidateSearchComponent } from './candidate/candidate-search/candidate-search.component';
 
