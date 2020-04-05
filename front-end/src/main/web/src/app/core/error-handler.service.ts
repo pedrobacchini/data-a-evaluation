@@ -17,8 +17,13 @@ export class ErrorHandlerService {
     } else if (errorResponse instanceof HttpErrorResponse
       && errorResponse.status >= 400 && errorResponse.status <= 499) {
       msg = 'Houve um erro ao processar sua requisição';
+
       try {
-        msg = errorResponse.error.friendlyMessage;
+        if (errorResponse.error && errorResponse.error.subErrors && errorResponse.error.subErrors.length > 0) {
+          msg = errorResponse.error.subErrors[0].message;
+        } else {
+          msg = errorResponse.error.friendlyMessage;
+        }
       } catch (e) {
       }
       console.error('Ocorreu um erro', errorResponse);

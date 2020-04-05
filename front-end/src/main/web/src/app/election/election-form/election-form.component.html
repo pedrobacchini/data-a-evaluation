@@ -16,13 +16,13 @@
           <label style="display: block">Período</label>
           <p-calendar [ngModel]="election.startDate" [inputStyle]="{ width: '95px' }"
                       dateFormat="dd/mm/yy" name="startDate"
-                      required [showIcon]="true" [locale]="ptBR"
+                      required [showIcon]="true" [minDate]="minStartDate" [locale]="ptBR"
                       (ngModelChange)="setStartDate($event)">
           </p-calendar>
           <label> até </label>
           <p-calendar [(ngModel)]="election.finishDate" [inputStyle]="{ width: '95px' }"
                       dateFormat="dd/mm/yy" name="finishDate"
-                      required [showIcon]="true" [locale]="ptBR"
+                      required [showIcon]="true" [minDate]="minEndDate" [locale]="ptBR"
                       (ngModelChange)="setFinishDate($event)">
           </p-calendar>
         </div>

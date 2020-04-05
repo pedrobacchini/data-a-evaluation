@@ -16,8 +16,10 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionFormComponent implements OnInit {
 
-  ptBR = environment.ptBR;
-  election: Election;
+  private minStartDate = new Date();
+  private minEndDate = new Date();
+  private ptBR = environment.ptBR;
+  private election: Election;
 
   @Output() electionChange: EventEmitter<Election> = new EventEmitter();
   @Input() set editElection(election: Election) {
@@ -31,6 +33,8 @@ export class ElectionFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.minStartDate.setDate(this.minStartDate.getDate() + 1);
+    this.minEndDate.setDate(this.minEndDate.getDate() + 2);
   }
 
   save(f: NgForm) {
