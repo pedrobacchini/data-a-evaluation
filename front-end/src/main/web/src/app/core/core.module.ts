@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { GrowlModule } from 'primeng/components/growl/growl';
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
@@ -23,7 +23,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   providers: [
     ConfirmationService,
     ErrorHandlerService,
-    MessageService
+    MessageService,
+    DatePipe
   ]
 })
 export class CoreModule {

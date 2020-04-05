@@ -14,18 +14,23 @@
 
         <div class="ui-g-12">
           <label style="display: block">Período</label>
-          <p-calendar [(ngModel)]="election.startDate" [inputStyle]="{ width: '95px' }"
-                      dateFormat="dd/mm/yy" name="startDate" required></p-calendar>
-
+          <p-calendar [ngModel]="election.startDate" [inputStyle]="{ width: '95px' }"
+                      dateFormat="dd/mm/yy" name="startDate"
+                      required [showIcon]="true" [locale]="ptBR"
+                      (ngModelChange)="setStartDate($event)">
+          </p-calendar>
           <label> até </label>
           <p-calendar [(ngModel)]="election.finishDate" [inputStyle]="{ width: '95px' }"
-                      dateFormat="dd/mm/yy" name="finishDate" required></p-calendar>
+                      dateFormat="dd/mm/yy" name="finishDate"
+                      required [showIcon]="true" [locale]="ptBR"
+                      (ngModelChange)="setFinishDate($event)">
+          </p-calendar>
         </div>
       </div>
 
       <div class="ui-g-8">
         <button [disabled]="f.invalid" class="button-pad" label="Salvar" pButton type="submit"></button>
-        <button (click)="new(f)" [disabled]="f.pristine" class="button-pad" label="Limpar" pButton
+        <button (click)="f.reset()" [disabled]="f.pristine" class="button-pad" label="Limpar" pButton
                 type="button"></button>
       </div>
     </div>

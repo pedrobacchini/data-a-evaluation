@@ -17,6 +17,14 @@ export class ElectionService {
   }
 
   save(election: Election): Observable<Election> {
+    return election.uuid ? this.update(election.uuid, election) : this.create(election);
+  }
+
+  private update(uuid: string, election: Election): Observable<Election> {
+    return this.http.put<Election>(`${this.electionUrl}/${uuid}`, election);
+  }
+
+  private create(election: Election): Observable<Election> {
     return this.http.post<Election>(this.electionUrl, election);
   }
 

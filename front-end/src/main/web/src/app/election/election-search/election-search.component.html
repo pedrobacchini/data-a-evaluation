@@ -9,7 +9,9 @@
               <div style="text-align: right">
                 <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
                 <!--suppress HtmlFormInputWithoutLabel -->
-                <input (input)="dt.filterGlobal($event.target.value, 'contains')" pInputText placeholder="Pesquisar..."
+                <input (input)="dt.filterGlobal($event.target.value, 'contains')"
+                       pInputText
+                       placeholder="Pesquisar..."
                        size="10"
                        style="width:auto" type="text">
               </div>
@@ -28,7 +30,12 @@
                   {{rowData[col.field]}}
                 </td>
                 <td class="col-acoes">
-                  <button icon="pi pi-pencil" pButton pTooltip="Editar" tooltipPosition="top"></button>
+                  <button icon="pi pi-pencil"
+                          pButton
+                          pTooltip="Editar"
+                          tooltipPosition="top"
+                          (click)="editElection = rowData">
+                  </button>
                   <button (click)="confirmDelete(rowData)" icon="pi pi-trash" pButton pTooltip="Excluir"
                           tooltipPosition="top"></button>
                 </td>
@@ -36,7 +43,7 @@
             </ng-template>
             <ng-template let-columns pTemplate="emptymessage">
               <tr>
-                <td [attr.colspan]="columns.length">
+                <td [attr.colspan]="columns.length + 1" class="td-emptymessage">
                   <b>Nenhuma Eleição encontrada...</b>
                 </td>
               </tr>
@@ -50,5 +57,5 @@
     </div>
   </div>
 </div>
-<app-election-form (newElection)="addElection($event)"></app-election-form>
+<app-election-form [editElection]="editElection" (electionChange)="electionChange($event)"></app-election-form>
 

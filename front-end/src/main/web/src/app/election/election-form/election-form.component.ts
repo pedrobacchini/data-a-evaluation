@@ -1,5 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 import { MessageService } from 'primeng/components/common/api';
 
@@ -14,12 +16,18 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionFormComponent implements OnInit {
 
-  election: Election = new Election();
-  @Output() newElection: EventEmitter<Election> = new EventEmitter();
+  ptBR = environment.ptBR;
+  election: Election;
+
+  @Output() electionChange: EventEmitter<Election> = new EventEmitter();
+  @Input() set editElection(election: Election) {
+    this.election = Object.assign(new Election(), election);
+  }
 
   constructor(private electionService: ElectionService,
               private messageService: MessageService,
-              private errorHandler: ErrorHandlerService) {
+              private errorHandler: ErrorHandlerService,
+              private datePipe: DatePipe) {
   }
 
   ngOnInit() {
@@ -29,12 +37,16 @@ export class ElectionFormComponent implements OnInit {
     this.electionService.save(this.election)
       .subscribe(election => {
         f.reset();
-        this.newElection.emit(election);
+        this.electionChange.emit(election);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
       }, exception => this.errorHandler.handle(exception));
   }
 
-  new(f: NgForm) {
-    f.reset();
+  setStartDate($event: any) {
+    this.election.startDate = this.datePipe.transform($event, 'dd/MM/yyyy');
+  }
+
+  setFinishDate($event: any) {
+    this.election.finishDate = this.datePipe.transform($event, 'dd/MM/yyyy');
   }
 }

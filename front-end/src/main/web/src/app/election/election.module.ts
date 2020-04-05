@@ -29,7 +29,7 @@ import { ElectionSearchComponent } from './election-search/election-search.compo
     TableModule,
     DropdownModule,
     CalendarModule,
-    TooltipModule,
+    TooltipModule
   ]
 })
 export class ElectionModule {

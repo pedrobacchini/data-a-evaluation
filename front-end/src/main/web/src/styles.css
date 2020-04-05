@@ -30,6 +30,10 @@ label {
   width: 100%;
 }
 
+.td-emptymessage {
+  text-align: center;
+}
+
 @media (min-width: 1200px) {
   .container {
     width: 1170px;

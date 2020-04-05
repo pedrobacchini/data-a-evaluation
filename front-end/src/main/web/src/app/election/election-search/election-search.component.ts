@@ -15,6 +15,7 @@ export class ElectionSearchComponent implements OnInit {
 
   elections = new Map<string, Election>();
   cols: any[];
+  editElection: Election = new Election();
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService,
@@ -36,7 +37,7 @@ export class ElectionSearchComponent implements OnInit {
     ];
   }
 
-  addElection(newElection: Election) {
+  electionChange(newElection: Election) {
     this.elections.set(newElection.uuid, newElection);
   }
 
