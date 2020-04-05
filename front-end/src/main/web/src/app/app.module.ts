@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { ElectionModule } from './election/election.module';
+import { CandidateModule } from './candidate/candidate.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ElectionModule } from './election/election.module';
     AppRoutingModule,
 
     ElectionModule,
+    CandidateModule,
     CoreModule
   ],
   providers: [],
