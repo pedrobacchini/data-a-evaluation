@@ -1,7 +1,6 @@
 package com.github.pedrobacchini.service.impl;
 
 import com.github.pedrobacchini.config.LocaleMessageSource;
-import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.exception.IntegrityViolationException;
 import com.github.pedrobacchini.exception.NotFoundException;
@@ -22,7 +21,6 @@ public class ElectionPositionServiceImpl implements ElectionPositionService {
 
     private final ElectionPositionRepository electionPositionRepository;
     private final LocaleMessageSource localeMessageSource;
-
 
     @Override
     public List<ElectionPosition> getAll() { return electionPositionRepository.findAll(); }
@@ -51,7 +49,7 @@ public class ElectionPositionServiceImpl implements ElectionPositionService {
             electionPositionRepository.deleteById(uuid);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException(localeMessageSource
-                    .getMessage("not-found", uuid, Election.class.getName()));
+                    .getMessage("not-found", uuid, ElectionPosition.class.getName()));
         } catch (DataIntegrityViolationException e) {
             throw new IntegrityViolationException(e.getMessage());
         }

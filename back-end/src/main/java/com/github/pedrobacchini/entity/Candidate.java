@@ -27,6 +27,7 @@ public class Candidate implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Setter
     @NotNull
     @ManyToOne
     @JoinColumn(name = "election_position_uuid")
