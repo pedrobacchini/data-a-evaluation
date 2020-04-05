@@ -1,7 +1,9 @@
 package com.github.pedrobacchini.config;
 
+import com.github.pedrobacchini.entity.Candidate;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
+import com.github.pedrobacchini.repository.CandidatesRepository;
 import com.github.pedrobacchini.repository.ElectionPositionRepository;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class TestConfig {
 
     private final ElectionRepository electionRepository;
     private final ElectionPositionRepository electionPositionRepository;
+    private final CandidatesRepository candidatesRepository;
 
     @Bean
     public boolean instantiateDatabase() {
@@ -36,6 +39,12 @@ public class TestConfig {
         ElectionPosition leader = new ElectionPosition("Leader");
 
         electionPositionRepository.saveAll(Arrays.asList(president, leader));
+
+        Candidate luiz = new Candidate("Luiz de souza", president);
+
+        Candidate pedro = new Candidate("Pedro Bacchini", leader);
+
+        candidatesRepository.saveAll(Arrays.asList(luiz, pedro));
 
         return true;
     }
