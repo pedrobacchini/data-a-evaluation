@@ -2,6 +2,7 @@ package com.github.pedrobacchini.resource;
 
 import com.github.pedrobacchini.dto.ElectionDTO;
 import com.github.pedrobacchini.entity.Election;
+import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,6 +54,11 @@ public class ElectionResource {
     }
 
     private Election fromDTO(ElectionDTO electionDTO) {
-        return new Election(electionDTO.getName(), electionDTO.getStartDate(), electionDTO.getFinishDate());
+        Election election = new Election(electionDTO.getName(), electionDTO.getStartDate(), electionDTO.getFinishDate());
+        List<ElectionPosition> electionPositions = electionDTO.getElectionPositions().stream()
+                .map(electionPositionDTO -> new ElectionPosition(electionPositionDTO.getUuid(), electionPositionDTO.getName()))
+                .collect(Collectors.toList());
+        election.addAllElectionPositions(electionPositions);
+        return election;
     }
 }

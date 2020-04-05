@@ -7,7 +7,6 @@ import com.github.pedrobacchini.exception.NotFoundException;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -38,9 +37,14 @@ public class ElectionServiceImpl implements ElectionService {
 
     @Override
     public Election update(UUID uuid, Election election) {
-        Election savedElection = getById(uuid);
-        BeanUtils.copyProperties(election, savedElection);
-        return electionRepository.save(savedElection);
+        try {
+            Election savedElection = getById(uuid);
+            savedElection.updateData(election);
+            return electionRepository.save(savedElection);
+        } catch (DataIntegrityViolationException e) {
+            throw new IntegrityViolationException(localeMessageSource
+                    .getMessage("not-delete-election-position-with-candidate"));
+        }
     }
 
     @Override
@@ -51,7 +55,8 @@ public class ElectionServiceImpl implements ElectionService {
             throw new NotFoundException(localeMessageSource
                     .getMessage("not-found", uuid, Election.class.getName()));
         } catch (DataIntegrityViolationException e) {
-            throw new IntegrityViolationException(e.getMessage());
+            throw new IntegrityViolationException(localeMessageSource
+                    .getMessage("not-delete-election-with-candidate"));
         }
     }
 }

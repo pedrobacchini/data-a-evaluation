@@ -26,13 +26,25 @@
                       (ngModelChange)="setFinishDate($event)">
           </p-calendar>
         </div>
+
+        <div class="ui-g-12 ui-fluid">
+        <label>Cargos
+          <p-chips name="electionPositions" [(ngModel)]="electionPositions"
+                   [allowDuplicate]="false" (onAdd)="addElectionPosition($event.value)"
+                    (onRemove)="removeElectionPosition($event.value)">
+          </p-chips>
+        </label>
+        </div>
+
       </div>
 
       <div class="ui-g-8">
         <button [disabled]="f.invalid" class="button-pad" label="Salvar" pButton type="submit"></button>
-        <button (click)="f.reset()" [disabled]="f.pristine" class="button-pad" label="Limpar" pButton
+        <button (click)="reset(f)" class="button-pad" label="Limpar" pButton
                 type="button"></button>
       </div>
+<!--      <pre>{{election | json}}</pre>-->
+<!--      <pre>{{electionPositions | json}}</pre>-->
     </div>
   </form>
 </div>

@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -23,18 +24,23 @@ public class ElectionPosition implements Serializable {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID uuid;
 
+    @NotNull
     @Setter
     @Column(nullable = false, length = 100)
     private String name;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false )
     @JsonIgnore
     @JoinColumn(name = "election_uuid")
     private Election election;
 
-    public ElectionPosition(String name, Election election) {
+    public ElectionPosition(String name) {
         this.name = name;
-        this.election = election;
+    }
+
+    public ElectionPosition(UUID uuid, String name) {
+        this.uuid = uuid;
+        this.name = name;
     }
 }

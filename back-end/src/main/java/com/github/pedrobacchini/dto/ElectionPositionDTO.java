@@ -8,9 +8,8 @@ import java.util.UUID;
 @Getter
 public class ElectionPositionDTO {
 
-    @NotNull
-    private String name;
+    private UUID uuid;
 
     @NotNull
-    private UUID electionUuid;
+    private String name;
 }

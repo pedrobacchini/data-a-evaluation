@@ -20,27 +20,27 @@ import java.util.Arrays;
 public class TestConfig {
 
     private final ElectionRepository electionRepository;
-    private final ElectionPositionRepository electionPositionRepository;
     private final CandidateRepository candidateRepository;
 
     @Bean
     public boolean instantiateDatabase() {
 
+
+        ElectionPosition prefeito = new ElectionPosition("Prefeito");
+        ElectionPosition vereador = new ElectionPosition("Vereador");
+
+        ElectionPosition programadorLider = new ElectionPosition("Programador Lider");
+        ElectionPosition artistaLider = new ElectionPosition("Artista Lider");
+
         Election eleicoes2020 = new Election("Eleições 2020",
                 LocalDate.of(2020, 10, 4), LocalDate.of(2020, 10, 25));
+        eleicoes2020.addAllElectionPositions(Arrays.asList(prefeito, vereador));
 
         Election eleicoeslideres = new Election("Eleições Lideres",
                 LocalDate.of(2020, 3, 31), LocalDate.of(2020, 4, 20));
+        eleicoeslideres.addAllElectionPositions(Arrays.asList(programadorLider, artistaLider));
 
         electionRepository.saveAll(Arrays.asList(eleicoes2020, eleicoeslideres));
-
-        ElectionPosition prefeito = new ElectionPosition("Prefeito", eleicoes2020);
-        ElectionPosition vereador = new ElectionPosition("Vereador", eleicoes2020);
-
-        ElectionPosition programadorLider = new ElectionPosition("Programador Lider", eleicoeslideres);
-        ElectionPosition artistaLider = new ElectionPosition("Artista Lider", eleicoeslideres);
-
-        electionPositionRepository.saveAll(Arrays.asList(prefeito, vereador, programadorLider, artistaLider));
 
         Candidate luiz = new Candidate("Luiz de souza", prefeito);
         Candidate joao = new Candidate("João Ferreira", prefeito);
