@@ -1,0 +1,28 @@
+<nav class="navbar">
+
+  <div class="container">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <a href="javascript:" class="navbar-toggle">
+          <i class="pi pi-bars" (click)="showMenu = !showMenu"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ul class="navbar-menu" [hidden]="!showMenu">
+
+    <li class="navbar-menuitem" routerLinkActive="ativo">
+      <a routerLink="/election" (click)="showMenu = false">Eleições</a>
+    </li>
+
+    <li class="navbar-menuitem" routerLinkActive="ativo">
+      <a routerLink="/candidate" (click)="showMenu = false">Candidatos</a>
+    </li>
+
+    <li class="navbar-menuitem">
+      <a href="javascript:">Logout</a>
+    </li>
+  </ul>
+
+</nav>

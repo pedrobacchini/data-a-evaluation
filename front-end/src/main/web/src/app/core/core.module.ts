@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { GrowlModule } from 'primeng/components/growl/growl';
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
@@ -7,18 +8,24 @@ import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdia
 
 import { ErrorHandlerService } from './error-handler.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent],
+  declarations: [
+    PageNotFoundComponent,
+    NavbarComponent
+  ],
   imports: [
     CommonModule,
+    RouterModule,
 
     GrowlModule,
     ConfirmDialogModule
   ],
   exports: [
     GrowlModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    NavbarComponent
   ],
   providers: [
     ConfirmationService,
