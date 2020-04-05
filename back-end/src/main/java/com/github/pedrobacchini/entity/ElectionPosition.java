@@ -26,7 +26,5 @@ public class ElectionPosition implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
-    public ElectionPosition(String name) {
-        this.name = name;
-    }
+    public ElectionPosition(String name) { this.name = name; }
 }
