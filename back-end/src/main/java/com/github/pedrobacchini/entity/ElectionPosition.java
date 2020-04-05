@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,5 +27,14 @@ public class ElectionPosition implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
-    public ElectionPosition(String name) { this.name = name; }
+    @Setter
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "election_uuid")
+    private Election election;
+
+    public ElectionPosition(String name, Election election) {
+        this.name = name;
+        this.election = election;
+    }
 }

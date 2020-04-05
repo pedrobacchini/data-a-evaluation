@@ -7,6 +7,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +39,14 @@ public class Election implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "finish_date")
     private LocalDate finishDate;
+
+    @Getter
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ElectionPosition> electionPositions = new ArrayList<>();
+
+    public Election(UUID uuid) {
+        this.uuid = uuid;
+    }
 
     public Election(String name, LocalDate startDate, LocalDate finishDate) {
         this.name = name;

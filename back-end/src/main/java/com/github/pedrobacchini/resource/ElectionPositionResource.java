@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.resource;
 
 import com.github.pedrobacchini.dto.ElectionPositionDTO;
+import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
 import com.github.pedrobacchini.service.ElectionPositionService;
@@ -33,6 +34,7 @@ public class ElectionPositionResource {
     }
 
     private ElectionPosition fromDTO(ElectionPositionDTO electionPositionDTO) {
-        return new ElectionPosition(electionPositionDTO.getName());
+        Election election = new Election(electionPositionDTO.getElectionUuid());
+        return new ElectionPosition(electionPositionDTO.getName(), election);
     }
 }
