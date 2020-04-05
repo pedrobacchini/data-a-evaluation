@@ -1,10 +1,10 @@
 package com.github.pedrobacchini.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -27,8 +27,8 @@ public class Candidate implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @JsonIgnore
     @Setter
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "election_position_uuid")
     private ElectionPosition electionPosition;

@@ -7,6 +7,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -35,9 +37,12 @@ public class ElectionPosition implements Serializable {
     @JoinColumn(name = "election_uuid")
     private Election election;
 
-    public ElectionPosition(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "electionPosition", fetch = FetchType.EAGER)
+    private List<Candidate> candidates = new ArrayList<>();
+
+    public ElectionPosition(UUID uuid) { this.uuid = uuid; }
+
+    public ElectionPosition(String name) { this.name = name; }
 
     public ElectionPosition(UUID uuid, String name) {
         this.uuid = uuid;
