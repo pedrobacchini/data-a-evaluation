@@ -18,7 +18,11 @@
                     [attr.rowspan]="rowElectionGroup[rowData.electionName].size">
                   {{rowData.electionName}}
                 </td>
-                <td>{{rowData.electionPositionName}}</td>
+                <td
+                  *ngIf="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].index === rowIndex"
+                  [attr.rowspan]="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].size">
+                  {{rowData.electionPositionName}}
+                </td>
                 <td>{{rowData.candidateName}}</td>
               </tr>
             </ng-template>

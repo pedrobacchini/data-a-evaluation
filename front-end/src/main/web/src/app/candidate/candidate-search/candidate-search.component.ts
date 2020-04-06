@@ -19,6 +19,7 @@ export class CandidateSearchComponent implements OnInit {
   candidatesTable: CandidateTable[] = [];
 
   rowElectionGroup: any;
+  rowElectionPositionGroup: any;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService) {
@@ -48,19 +49,28 @@ export class CandidateSearchComponent implements OnInit {
 
   updateRowGroupMetaDataTable() {
     this.rowElectionGroup = {};
+    this.rowElectionPositionGroup = {};
     if (this.candidatesTable) {
       for (let i = 0; i < this.candidatesTable.length; i++) {
         const rowData = this.candidatesTable[i];
-        const election = rowData.electionName;
+        const electionName = rowData.electionName;
+        const electionPositionName = electionName.concat(rowData.electionPositionName);
         if (i === 0) {
-          this.rowElectionGroup[election] = {index: 0, size: 1};
+          this.rowElectionGroup[electionName] = {index: 0, size: 1};
+          this.rowElectionPositionGroup[electionPositionName] = {index: 0, size: 1};
         } else {
-          const previousRowData = this.candidatesTable[i - 1];
-          const previousRowGroup = previousRowData.electionName;
-          if (election === previousRowGroup) {
-            this.rowElectionGroup[election].size++;
+          const previousElection = this.candidatesTable[i - 1];
+          const previousElectionName = previousElection.electionName;
+          const previousElectionPositionName = previousElectionName.concat(previousElection.electionPositionName);
+          if (electionName === previousElectionName) {
+            this.rowElectionGroup[electionName].size++;
           } else {
-            this.rowElectionGroup[election] = {index: i, size: 1};
+            this.rowElectionGroup[electionName] = {index: i, size: 1};
+          }
+          if (electionPositionName === previousElectionPositionName) {
+            this.rowElectionPositionGroup[electionPositionName].size++;
+          } else {
+            this.rowElectionPositionGroup[electionPositionName] = {index: i, size: 1};
           }
         }
       }
