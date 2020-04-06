@@ -34,10 +34,16 @@
                           pButton
                           pTooltip="Editar"
                           tooltipPosition="top"
-                          (click)="editElection = rowData">
+                          (click)="editElection = rowData"
+                          [disabled]="startedElection(rowData)">
                   </button>
-                  <button (click)="confirmDelete(rowData)" icon="pi pi-trash" pButton pTooltip="Excluir"
-                          tooltipPosition="top"></button>
+                  <button icon="pi pi-trash"
+                          pButton
+                          pTooltip="Excluir"
+                          tooltipPosition="top"
+                          (click)="confirmDelete(rowData)"
+                          [disabled]="startedElection(rowData)">
+                  </button>
                 </td>
               </tr>
             </ng-template>

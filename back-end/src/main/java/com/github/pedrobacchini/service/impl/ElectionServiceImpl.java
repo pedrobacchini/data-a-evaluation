@@ -4,6 +4,7 @@ import com.github.pedrobacchini.config.LocaleMessageSource;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.exception.IntegrityViolationException;
 import com.github.pedrobacchini.exception.NotFoundException;
+import com.github.pedrobacchini.exception.StartElectionException;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +41,11 @@ public class ElectionServiceImpl implements ElectionService {
     public Election update(UUID uuid, Election election) {
         try {
             Election savedElection = getById(uuid);
+
+            if (savedElection.getStartDate().isBefore(LocalDate.now()))
+                throw new StartElectionException(localeMessageSource
+                        .getMessage("election-started-cannot-updated"));
+
             savedElection.updateData(election);
             return electionRepository.save(savedElection);
         } catch (DataIntegrityViolationException e) {
@@ -49,6 +56,10 @@ public class ElectionServiceImpl implements ElectionService {
 
     @Override
     public void delete(UUID uuid) {
+        Election savedElection = getById(uuid);
+        if (savedElection.getStartDate().isBefore(LocalDate.now()))
+            throw new StartElectionException(localeMessageSource
+                    .getMessage("election-started-cannot-updated"));
         try {
             electionRepository.deleteById(uuid);
         } catch (EmptyResultDataAccessException e) {

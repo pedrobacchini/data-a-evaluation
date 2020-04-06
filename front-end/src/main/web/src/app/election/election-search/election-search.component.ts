@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
+import * as moment from 'moment';
 
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
@@ -56,5 +57,9 @@ export class ElectionSearchComponent implements OnInit {
 
   electionsAtTheTable() {
     return Array.from(this.elections.values());
+  }
+
+  startedElection(election: Election) {
+    return moment(election.startDate, 'DD/MM/YYYY').isBefore(new Date());
   }
 }

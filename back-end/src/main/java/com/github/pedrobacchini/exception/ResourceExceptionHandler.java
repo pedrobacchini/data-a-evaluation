@@ -89,6 +89,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleApiException(ApiException ex, WebRequest request) {
         String friendlyMessage = ex instanceof NotFoundException ? localeMessageSource.getMessage("resource-not-found")
                 : ex instanceof IntegrityViolationException ? ex.getMessage()
+                : ex instanceof StartElectionException ? ex.getMessage()
                 : localeMessageSource.getMessage("no-friendly-message");
 
         String debugMessage = ExceptionUtils.getRootCauseMessage(ex);
