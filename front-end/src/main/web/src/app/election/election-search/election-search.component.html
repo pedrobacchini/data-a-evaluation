@@ -25,24 +25,24 @@
               </tr>
             </ng-template>
             <ng-template let-columns="columns" let-rowData pTemplate="body">
-              <tr [pSelectableRow]="rowData">
+              <tr [pSelectableRow]="rowData" [ngClass]="electionStatus(rowData)" [pTooltip]="electionTooltip(rowData)">
                 <td *ngFor="let col of columns">
                   {{rowData[col.field]}}
                 </td>
-                <td class="col-acoes">
+                <td class="col-actions">
                   <button icon="pi pi-pencil"
                           pButton
                           pTooltip="Editar"
                           tooltipPosition="top"
                           (click)="editElection = rowData"
-                          [disabled]="startedElection(rowData)">
+                          [disabled]="startedOrFinishElection(rowData)">
                   </button>
                   <button icon="pi pi-trash"
                           pButton
                           pTooltip="Excluir"
                           tooltipPosition="top"
                           (click)="confirmDelete(rowData)"
-                          [disabled]="startedElection(rowData)">
+                          [disabled]="startedOrFinishElection(rowData)">
                   </button>
                 </td>
               </tr>

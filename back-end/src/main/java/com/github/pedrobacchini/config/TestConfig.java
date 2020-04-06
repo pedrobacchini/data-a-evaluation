@@ -4,7 +4,6 @@ import com.github.pedrobacchini.entity.Candidate;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.repository.CandidateRepository;
-import com.github.pedrobacchini.repository.ElectionPositionRepository;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +31,9 @@ public class TestConfig {
         ElectionPosition programadorLider = new ElectionPosition("Programador Lider");
         ElectionPosition artistaLider = new ElectionPosition("Artista Lider");
 
+        ElectionPosition sindico = new ElectionPosition("Sindico");
+        ElectionPosition subsindico = new ElectionPosition("Sub-Sindico");
+
         Election eleicoes2020 = new Election("Eleições 2020",
                 LocalDate.of(2020, 10, 4), LocalDate.of(2020, 10, 25));
         eleicoes2020.addAllElectionPositions(Arrays.asList(prefeito, vereador));
@@ -40,7 +42,11 @@ public class TestConfig {
                 LocalDate.of(2020, 3, 31), LocalDate.of(2020, 4, 20));
         eleicoeslideres.addAllElectionPositions(Arrays.asList(programadorLider, artistaLider));
 
-        electionRepository.saveAll(Arrays.asList(eleicoes2020, eleicoeslideres));
+        Election eleicaoCodomino = new Election("Eleioções Condominio 2019",
+                LocalDate.of(2019, 1, 12), LocalDate.of(2019, 3, 1));
+        eleicaoCodomino.addAllElectionPositions(Arrays.asList(sindico, subsindico));
+
+        electionRepository.saveAll(Arrays.asList(eleicoes2020, eleicoeslideres, eleicaoCodomino));
 
         Candidate luiz = new Candidate("Luiz de souza", prefeito);
         Candidate joao = new Candidate("João Ferreira", prefeito);

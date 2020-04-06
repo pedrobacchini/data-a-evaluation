@@ -59,7 +59,20 @@ export class ElectionSearchComponent implements OnInit {
     return Array.from(this.elections.values());
   }
 
-  startedElection(election: Election) {
-    return moment(election.startDate, 'DD/MM/YYYY').isBefore(new Date());
+  electionStatus(election: Election) {
+    const now = new Date();
+    const startBefore = moment(election.startDate, 'DD/MM/YYYY').isBefore(now);
+    const finishBefore = moment(election.finishDate, 'DD/MM/YYYY').isBefore(now);
+    return finishBefore ? 'finishElection' : startBefore ? 'startElection' : 'notStartElection';
+  }
+
+  startedOrFinishElection(election: Election) {
+    const status = this.electionStatus(election);
+    return status === 'startElection' || status === 'finishElection';
+  }
+
+  electionTooltip(election: Election) {
+    const status = this.electionStatus(election);
+    return status === 'finishElection' ? 'Eleição terminou' : status === 'startElection' ? 'Eleição começou' : '';
   }
 }
