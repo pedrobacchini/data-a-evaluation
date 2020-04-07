@@ -28,12 +28,16 @@ export class ElectionService {
     return this.http.post<Election>(this.electionUrl, election);
   }
 
-  getAll(): Observable<Election[]> {
-    return this.http.get<Election[]>(this.electionUrl);
+  getAllStarted(): Observable<Election[]> {
+    return this.http.get<Election[]>(this.electionUrl + '?started');
   }
 
-  getAllAvailable(): Observable<ElectionResume[]> {
+  getAllAvailable(): Observable<Election[]> {
     return this.http.get<Election[]>(this.electionUrl + '?available');
+  }
+
+  getAllAvailableResume(): Observable<ElectionResume[]> {
+    return this.http.get<Election[]>(this.electionUrl + '?available&resume');
   }
 
   getAllElectionPositionsResume(uuid: string): Observable<ElectionPositionResume[]> {

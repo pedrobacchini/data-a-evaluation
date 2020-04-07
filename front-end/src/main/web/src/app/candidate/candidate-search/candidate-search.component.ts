@@ -27,7 +27,7 @@ export class CandidateSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.electionService.getAll()
+    this.electionService.getAllAvailable()
       .subscribe(elections => {
         elections.forEach(election => {
           election.electionPositions.forEach(electionPosition => {

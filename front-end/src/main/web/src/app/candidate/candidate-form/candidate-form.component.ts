@@ -18,7 +18,7 @@ export class CandidateFormComponent implements OnInit {
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService) {
-    this.electionService.getAllAvailable()
+    this.electionService.getAllAvailableResume()
       .subscribe(elections => {
         this.elections = elections.map(election => ({label: election.name, value: election.uuid}));
       }, exception => this.errorHandler.handle(exception));

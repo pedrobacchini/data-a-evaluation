@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { ElectionModule } from './election/election.module';
 import { CandidateModule } from './candidate/candidate.module';
+import { ReportModule } from './report/report.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CandidateModule } from './candidate/candidate.module';
 
     ElectionModule,
     CandidateModule,
+    ReportModule,
     CoreModule
   ],
   providers: [],

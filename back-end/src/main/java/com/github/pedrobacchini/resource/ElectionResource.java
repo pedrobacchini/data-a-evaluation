@@ -29,16 +29,19 @@ public class ElectionResource {
     private final ApplicationEventPublisher publisher;
     private final ElectionPositionService electionPositionService;
 
-    @GetMapping
-    public List<Election> getAll() { return electionService.getAll(); }
+    @GetMapping(params = "started")
+    public List<Election> getAllStarted() { return electionService.getAllStarted(); }
 
     @GetMapping(params = "available")
-    public List<ElectionResume> getAllAvailable() {
+    public List<Election> getAllAvailable() { return electionService.getAllAvailable(); }
+
+    @GetMapping(params = {"available", "resume"})
+    public List<ElectionResume> getAllAvailableResume() {
         return electionService.getAllAvailable().stream().map(ElectionResume::new).collect(Collectors.toList());
     }
 
     @GetMapping(params = "resume", value = "/{uuid}/election-positions")
-    public List< ElectionPositionResume> getAllElectionPositionsResume(@PathVariable("uuid") String uuid) {
+    public List<ElectionPositionResume> getAllElectionPositionsResume(@PathVariable("uuid") String uuid) {
         Election election = electionService.getById(UUID.fromString(uuid));
         return electionPositionService.getAllByElection(election).stream()
                 .map(ElectionPositionResume::new).collect(Collectors.toList());
