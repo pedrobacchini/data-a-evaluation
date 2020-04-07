@@ -1,8 +1,8 @@
 package com.github.pedrobacchini.resource;
 
 import com.github.pedrobacchini.dto.ElectionDTO;
-import com.github.pedrobacchini.dto.ElectionPositionResume;
-import com.github.pedrobacchini.dto.ElectionResume;
+import com.github.pedrobacchini.dto.ElectionPositionSummary;
+import com.github.pedrobacchini.dto.ElectionSummary;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
@@ -35,16 +35,13 @@ public class ElectionResource {
     @GetMapping(params = "available")
     public List<Election> getAllAvailable() { return electionService.getAllAvailable(); }
 
-    @GetMapping(params = {"available", "resume"})
-    public List<ElectionResume> getAllAvailableResume() {
-        return electionService.getAllAvailable().stream().map(ElectionResume::new).collect(Collectors.toList());
-    }
+    @GetMapping(params = {"available", "summary"})
+    public List<ElectionSummary> getAllAvailableSummary() { return electionService.getAllAvailableSummary(); }
 
-    @GetMapping(params = "resume", value = "/{uuid}/election-positions")
-    public List<ElectionPositionResume> getAllElectionPositionsResume(@PathVariable("uuid") String uuid) {
+    @GetMapping(params = "summary", value = "/{uuid}/election-positions")
+    public List<ElectionPositionSummary> getAllElectionPositionsSummary(@PathVariable("uuid") String uuid) {
         Election election = electionService.getById(UUID.fromString(uuid));
-        return electionPositionService.getAllByElection(election).stream()
-                .map(ElectionPositionResume::new).collect(Collectors.toList());
+        return electionPositionService.getAllByElection(election);
     }
 
     @GetMapping(path = "/{uuid}")

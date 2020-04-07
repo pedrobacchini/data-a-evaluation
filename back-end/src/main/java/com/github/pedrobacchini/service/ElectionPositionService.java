@@ -1,5 +1,6 @@
 package com.github.pedrobacchini.service;
 
+import com.github.pedrobacchini.dto.ElectionPositionSummary;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 
@@ -10,7 +11,7 @@ public interface ElectionPositionService {
 
     List<ElectionPosition> getAll();
 
-    List<ElectionPosition> getAllByElection(Election election);
+    List<ElectionPositionSummary> getAllByElection(Election election);
 
     ElectionPosition getById(UUID uuid);
 
