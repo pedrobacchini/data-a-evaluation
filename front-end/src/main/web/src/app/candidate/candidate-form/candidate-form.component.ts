@@ -41,4 +41,12 @@ export class CandidateFormComponent implements OnInit {
         this.electionPositions = electionPositionsResume.map(e => ({label: e.name, value: e.uuid}));
       }, exception => this.errorHandler.handle(exception));
   }
+
+  choose() {
+    console.log('choose');
+  }
+
+  fileChangeEvent($event: Event) {
+    console.log('fileChangeEvent');
+  }
 }

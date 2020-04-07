@@ -63,7 +63,7 @@ export class ElectionFormComponent implements OnInit {
   }
 
   addElectionPosition(value: string) {
-    this.election.electionPositions.push({uuid: null, name: value, candidates: []});
+    this.election.electionPositions.push({name: value});
   }
 
   removeElectionPosition(value: string) {

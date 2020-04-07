@@ -1,67 +1,62 @@
+<app-election-form [editElection]="editElection" (electionChange)="electionChange($event)"></app-election-form>
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
-      <h1>Eleições</h1>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <p-table #dt [columns]="cols" [value]="electionsAtTheTable()">
-            <ng-template pTemplate="caption">
-              <div style="text-align: right">
-                <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-                <!--suppress HtmlFormInputWithoutLabel -->
-                <input (input)="dt.filterGlobal($event.target.value, 'contains')"
-                       pInputText
-                       placeholder="Pesquisar..."
-                       size="10"
-                       style="width:auto" type="text">
-              </div>
-            </ng-template>
-            <ng-template let-columns pTemplate="header">
-              <tr>
-                <th *ngFor="let col of columns">
-                  {{col.header}}
-                </th>
-                <th>Ações</th>
-              </tr>
-            </ng-template>
-            <ng-template let-columns="columns" let-rowData pTemplate="body">
-              <tr [pSelectableRow]="rowData" [ngClass]="electionStatus(rowData)" [pTooltip]="electionTooltip(rowData)">
-                <td *ngFor="let col of columns">
-                  {{rowData[col.field]}}
-                </td>
-                <td class="col-actions">
-                  <button icon="pi pi-pencil"
-                          pButton
-                          pTooltip="Editar"
-                          tooltipPosition="top"
-                          (click)="editElection = rowData"
-                          [disabled]="startedOrFinishElection(rowData)">
-                  </button>
-                  <button icon="pi pi-trash"
-                          pButton
-                          pTooltip="Excluir"
-                          tooltipPosition="top"
-                          (click)="confirmDelete(rowData)"
-                          [disabled]="startedOrFinishElection(rowData)">
-                  </button>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template let-columns pTemplate="emptymessage">
-              <tr>
-                <td [attr.colspan]="columns.length + 1" class="td-emptymessage">
-                  <b>Nenhuma Eleição encontrada...</b>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-              {{elections ? elections.size : 0}} Eleições
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
+      <p-table #dt [columns]="cols" [value]="electionsAtTheTable()">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input (input)="dt.filterGlobal($event.target.value, 'contains')"
+                   pInputText
+                   placeholder="Pesquisar..."
+                   size="10"
+                   style="width:auto" type="text">
+          </div>
+        </ng-template>
+        <ng-template let-columns pTemplate="header">
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template let-columns="columns" let-rowData pTemplate="body">
+          <tr [pSelectableRow]="rowData" [ngClass]="electionStatus(rowData)" [pTooltip]="electionTooltip(rowData)">
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+            <td class="col-actions">
+              <button icon="pi pi-pencil"
+                      pButton
+                      pTooltip="Editar"
+                      tooltipPosition="top"
+                      (click)="editElection = rowData"
+                      [disabled]="startedOrFinishElection(rowData)">
+              </button>
+              <button icon="pi pi-trash"
+                      pButton
+                      pTooltip="Excluir"
+                      tooltipPosition="top"
+                      (click)="confirmDelete(rowData)"
+                      [disabled]="startedOrFinishElection(rowData)">
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template let-columns pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="columns.length + 1" class="td-emptymessage">
+              <b>Nenhuma Eleição encontrada...</b>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          {{elections ? elections.size : 0}} Eleições
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>
-<app-election-form [editElection]="editElection" (electionChange)="electionChange($event)"></app-election-form>
 

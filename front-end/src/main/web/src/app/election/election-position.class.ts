@@ -1,7 +1,7 @@
 import { Candidate } from '../candidate/candidate.class';
 
 export class ElectionPosition {
-  uuid: string;
+  uuid?: string;
   name: string;
-  candidates: Candidate[] = [];
+  candidates?: Candidate[] = [];
 }

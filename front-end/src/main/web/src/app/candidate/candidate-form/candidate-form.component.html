@@ -2,10 +2,28 @@
   <form #f="ngForm" (ngSubmit)="save(f)" autocomplete="off">
     <div class="ui-g">
       <div class="ui-g-12">
-        <h1>Novo Canidato</h1>
+        <h1>Candidatos</h1>
       </div>
 
       <div class="ui-g-8 ui-g-nopad">
+
+        <div>
+          <img width="145" height="145" class="profile-round"
+               [src]="newCandidate?.picture || '/assets/images/avatars/avatar_2x.png'"
+               alt="">
+          <div>
+            <button class="btn btn-sm btn-primary mrg-top-10 no-mrg-btm" (click)="choose()">
+              Trocar Foto
+            </button>
+            <input accept="image/jpeg, image/png"
+                   id="upload"
+                   name="upload"
+                   (change)="fileChangeEvent($event)"
+                   style="display: none !important;"
+                   type="file">
+          </div>
+        </div>
+
         <div class="ui-g-12 ui-fluid">
           <label>Name
             <input [(ngModel)]="newCandidate.name" name="name" pInputText required type="text">
@@ -39,4 +57,3 @@
     </div>
   </form>
 </div>
-<pre>{{newCandidate | json}}</pre>

@@ -1,35 +1,37 @@
+<app-candidate-form></app-candidate-form>
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
-      <h1>Candidatos</h1>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <p-table [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Eleição</th>
-                <th>Cargo</th>
-                <th>Canidato</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-              <tr>
-                <td *ngIf="rowElectionGroup[rowData.electionName].index === rowIndex"
-                    [attr.rowspan]="rowElectionGroup[rowData.electionName].size">
-                  {{rowData.electionName}}
-                </td>
-                <td
-                  *ngIf="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].index === rowIndex"
-                  [attr.rowspan]="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].size">
-                  {{rowData.electionPositionName}}
-                </td>
-                <td>{{rowData.candidateName}}</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
+      <p-table [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Eleição</th>
+            <th>Cargo</th>
+            <th style="width: 80px">Foto</th>
+            <th>Canidato</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td *ngIf="rowElectionGroup[rowData.electionName].index === rowIndex"
+                [attr.rowspan]="rowElectionGroup[rowData.electionName].size">
+              {{rowData.electionName}}
+            </td>
+            <td
+              *ngIf="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].index === rowIndex"
+              [attr.rowspan]="rowElectionPositionGroup[rowData.electionName.concat(rowData.electionPositionName)].size">
+              {{rowData.electionPositionName}}
+            </td>
+            <td style="text-align: center;">
+              <img class="circle"
+                   [src]="rowData?.picture"
+                   id="picture"
+                   alt="profile" (error)="sePictureError($event)">
+            </td>
+            <td>{{rowData.candidateName}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>
-<app-candidate-form></app-candidate-form>

@@ -7,6 +7,7 @@ interface CandidateTable {
   electionName;
   electionPositionName;
   candidateName;
+  picture;
 }
 
 @Component({
@@ -34,7 +35,8 @@ export class CandidateSearchComponent implements OnInit {
               this.candidatesTable.push({
                 electionName: election.name,
                 electionPositionName: electionPosition.name,
-                candidateName: candidate.name
+                candidateName: candidate.name,
+                picture: candidate.picture
               });
             });
           });
@@ -77,4 +79,7 @@ export class CandidateSearchComponent implements OnInit {
     }
   }
 
+  sePictureError(event) {
+    event.target.src = '/assets/images/avatars/avatar_2x.png';
+  }
 }

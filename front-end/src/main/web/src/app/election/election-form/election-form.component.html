@@ -2,7 +2,7 @@
   <form #f="ngForm" (ngSubmit)="save(f)" autocomplete="off">
     <div class="ui-g">
       <div class="ui-g-12">
-        <h1>Nova Eleição</h1>
+        <h1>Eleições</h1>
       </div>
 
       <div class="ui-g-8 ui-g-nopad">
@@ -28,12 +28,12 @@
         </div>
 
         <div class="ui-g-12 ui-fluid">
-        <label>Cargos
-          <p-chips name="electionPositions" [(ngModel)]="electionPositions"
-                   [allowDuplicate]="false" (onAdd)="addElectionPosition($event.value)"
-                    (onRemove)="removeElectionPosition($event.value)">
-          </p-chips>
-        </label>
+          <label>Cargos
+            <p-chips name="electionPositions" [(ngModel)]="electionPositions"
+                     [allowDuplicate]="false" (onAdd)="addElectionPosition($event.value)"
+                     (onRemove)="removeElectionPosition($event.value)">
+            </p-chips>
+          </label>
         </div>
 
       </div>
@@ -43,8 +43,8 @@
         <button (click)="reset(f)" class="button-pad" label="Limpar" pButton
                 type="button"></button>
       </div>
-<!--      <pre>{{election | json}}</pre>-->
-<!--      <pre>{{electionPositions | json}}</pre>-->
+      <!--      <pre>{{election | json}}</pre>-->
+      <!--      <pre>{{electionPositions | json}}</pre>-->
     </div>
   </form>
 </div>
