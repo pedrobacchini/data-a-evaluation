@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.service.impl;
 
 import com.github.pedrobacchini.config.LocaleMessageSource;
+import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.exception.IntegrityViolationException;
 import com.github.pedrobacchini.exception.NotFoundException;
@@ -24,6 +25,11 @@ public class ElectionPositionServiceImpl implements ElectionPositionService {
 
     @Override
     public List<ElectionPosition> getAll() { return electionPositionRepository.findAll(); }
+
+    @Override
+    public List<ElectionPosition> getAllByElection(Election election) {
+        return electionPositionRepository.findAllByElection(election);
+    }
 
     @Override
     public ElectionPosition getById(UUID uuid) {

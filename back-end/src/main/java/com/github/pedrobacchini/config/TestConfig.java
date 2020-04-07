@@ -42,7 +42,7 @@ public class TestConfig {
                 LocalDate.of(2020, 3, 31), LocalDate.of(2020, 4, 20));
         eleicoeslideres.addAllElectionPositions(Arrays.asList(programadorLider, artistaLider));
 
-        Election eleicaoCodomino = new Election("Eleioções Condominio 2019",
+        Election eleicaoCodomino = new Election("Eleições Condominio 2019",
                 LocalDate.of(2019, 1, 12), LocalDate.of(2019, 3, 1));
         eleicaoCodomino.addAllElectionPositions(Arrays.asList(sindico, subsindico));
 

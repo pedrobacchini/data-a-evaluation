@@ -32,6 +32,14 @@ export class ElectionService {
     return this.http.get<Election[]>(this.electionUrl);
   }
 
+  getAllAvailable(): Observable<ElectionResume[]> {
+    return this.http.get<Election[]>(this.electionUrl + '?available');
+  }
+
+  getAllElectionPositionsResume(uuid: string): Observable<ElectionPositionResume[]> {
+    return this.http.get<Election[]>(`${this.electionUrl}/${uuid}/election-positions?resume`);
+  }
+
   delete(uuid: string): Observable<void> {
     return this.http.delete<void>(`${this.electionUrl}/${uuid}`);
   }

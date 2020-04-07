@@ -1,9 +1,12 @@
 package com.github.pedrobacchini.resource;
 
 import com.github.pedrobacchini.dto.ElectionDTO;
+import com.github.pedrobacchini.dto.ElectionPositionResume;
+import com.github.pedrobacchini.dto.ElectionResume;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
+import com.github.pedrobacchini.service.ElectionPositionService;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,9 +27,22 @@ public class ElectionResource {
 
     private final ElectionService electionService;
     private final ApplicationEventPublisher publisher;
+    private final ElectionPositionService electionPositionService;
 
     @GetMapping
     public List<Election> getAll() { return electionService.getAll(); }
+
+    @GetMapping(params = "available")
+    public List<ElectionResume> getAllAvailable() {
+        return electionService.getAllAvailable().stream().map(ElectionResume::new).collect(Collectors.toList());
+    }
+
+    @GetMapping(params = "resume", value = "/{uuid}/election-positions")
+    public List< ElectionPositionResume> getAllElectionPositionsResume(@PathVariable("uuid") String uuid) {
+        Election election = electionService.getById(UUID.fromString(uuid));
+        return electionPositionService.getAllByElection(election).stream()
+                .map(ElectionPositionResume::new).collect(Collectors.toList());
+    }
 
     @GetMapping(path = "/{uuid}")
     public ResponseEntity<Election> getById(@PathVariable("uuid") String uuid) {

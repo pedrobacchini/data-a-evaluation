@@ -27,6 +27,11 @@ public class ElectionServiceImpl implements ElectionService {
     public List<Election> getAll() { return electionRepository.findAll(); }
 
     @Override
+    public List<Election> getAllAvailable() {
+        return electionRepository.findAllByStartDateIsAfter(LocalDate.now());
+    }
+
+    @Override
     public Election getById(UUID uuid) {
         return electionRepository.findById(uuid)
                 .orElseThrow(() ->

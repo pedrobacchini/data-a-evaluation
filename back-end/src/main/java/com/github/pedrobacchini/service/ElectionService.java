@@ -9,6 +9,8 @@ public interface ElectionService {
 
     List<Election> getAll();
 
+    List<Election> getAllAvailable();
+
     Election getById(UUID uuid);
 
     Election create(Election election);
