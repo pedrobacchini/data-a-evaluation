@@ -10,9 +10,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +54,14 @@ public class CandidateResource {
     public ResponseEntity<Void> delete(@PathVariable("uuid") String uuid) {
         candidateService.delete(UUID.fromString(uuid));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{uuid}/picture")
+    public ResponseEntity<Void> uploadProfilePicture(@PathVariable("uuid") String uuid,
+                                                     @RequestParam(name = "file") MultipartFile file) throws IOException, URISyntaxException {
+        Candidate candidate = candidateService.getById(UUID.fromString(uuid));
+        String path = candidateService.uploadProfilePicture(candidate, file);
+        return ResponseEntity.created(new URI(path)).build();
     }
 
     private Candidate fromDTO(CandidateDTO candidateDTO) {

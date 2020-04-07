@@ -1,6 +1,8 @@
 package com.github.pedrobacchini.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.pedrobacchini.BackEndApplication;
+import com.github.pedrobacchini.config.BackEndProperty;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,5 +38,10 @@ public class Candidate implements Serializable {
     public Candidate(String name, ElectionPosition electionPosition) {
         this.name = name;
         this.electionPosition = electionPosition;
+    }
+
+    public String getPicture() {
+        BackEndProperty backEndProperty = BackEndApplication.getBean(BackEndProperty.class);
+        return backEndProperty.getImage().getCandidate().getBaseUrl() + uuid + ".jpg";
     }
 }

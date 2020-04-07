@@ -5,11 +5,15 @@ import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.repository.CandidateRepository;
 import com.github.pedrobacchini.repository.ElectionRepository;
+import com.github.pedrobacchini.service.CandidateService;
+import com.github.pedrobacchini.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -18,12 +22,13 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class TestConfig {
 
+    private final ImageService imageService;
     private final ElectionRepository electionRepository;
     private final CandidateRepository candidateRepository;
+    private final CandidateService candidateService;
 
     @Bean
-    public boolean instantiateDatabase() {
-
+    public boolean instantiateDatabase() throws IOException {
 
         ElectionPosition prefeito = new ElectionPosition("Prefeito");
         ElectionPosition vereador = new ElectionPosition("Vereador");
@@ -62,6 +67,12 @@ public class TestConfig {
         Candidate leonardo = new Candidate("Leonardo Medeiros", artistaLider);
 
         candidateRepository.saveAll(Arrays.asList(luiz, joao, fernando, diego, maria, pedro, henrique, paulo, leonardo));
+
+        MultipartFile luizPicture = imageService.getMultipartFile("back-end/src/main/resources/static/01.jpg");
+        candidateService.uploadProfilePicture(luiz, luizPicture);
+
+        MultipartFile joaoPicture = imageService.getMultipartFile("back-end/src/main/resources/static/02.jpg");
+        candidateService.uploadProfilePicture(joao, joaoPicture);
 
         return true;
     }
