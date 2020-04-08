@@ -1,8 +1,19 @@
-<app-candidate-form></app-candidate-form>
+<app-candidate-form (candidateChange)="candidateChange($event)"></app-candidate-form>
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
-      <p-table [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
+      <p-table #dt [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input (input)="dt.filterGlobal($event.target.value, 'contains')"
+                   pInputText
+                   placeholder="Pesquisar..."
+                   size="10"
+                   style="width:auto" type="text">
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Eleição</th>

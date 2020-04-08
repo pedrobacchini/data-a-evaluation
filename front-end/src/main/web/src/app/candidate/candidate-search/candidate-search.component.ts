@@ -18,15 +18,15 @@ interface CandidateTable {
 export class CandidateSearchComponent implements OnInit {
 
   candidatesTable: CandidateTable[] = [];
-
-  rowElectionGroup: any;
-  rowElectionPositionGroup: any;
+  private rowElectionGroup: any;
+  private rowElectionPositionGroup: any;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService) {
   }
 
   ngOnInit() {
+    this.candidatesTable = [];
     this.electionService.getAllAvailable()
       .subscribe(elections => {
         elections.forEach(election => {
@@ -76,6 +76,12 @@ export class CandidateSearchComponent implements OnInit {
           }
         }
       }
+    }
+  }
+
+  candidateChange(isChange: boolean) {
+    if (isChange) {
+      this.ngOnInit();
     }
   }
 

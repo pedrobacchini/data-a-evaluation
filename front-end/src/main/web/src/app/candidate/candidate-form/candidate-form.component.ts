@@ -1,9 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
+
+import { MessageService } from 'primeng/components/common/api';
 
 import { NewCandidate } from '../new-candidate.class';
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
+import { CandidateService } from '../candidate.service';
 
 @Component({
   selector: 'app-candidate-form',
@@ -17,12 +21,15 @@ export class CandidateFormComponent implements OnInit {
   private newCandidate: NewCandidate = new NewCandidate();
   private elections = [];
   private electionPositions = [];
-  private imageChangedEvent: any;
+  private fileToUpload: File = null;
   private loading;
+  @Output() candidateChange: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private electionService: ElectionService,
-              private errorHandler: ErrorHandlerService) {
-    this.electionService.getAllAvailableResume()
+              private candidateService: CandidateService,
+              private errorHandler: ErrorHandlerService,
+              private messageService: MessageService) {
+    this.electionService.getAllAvailableSummary()
       .subscribe(elections => {
         this.elections = elections.map(election => ({label: election.name, value: election.uuid}));
       }, exception => this.errorHandler.handle(exception));
@@ -32,16 +39,23 @@ export class CandidateFormComponent implements OnInit {
   }
 
   save(f: NgForm) {
-    // const file: File = this.imageChangedEvent.target.files[0];
-
+    this.loading = true;
+    this.candidateService.save(this.newCandidate)
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(() => {
+        this.candidateChange.emit(true);
+        this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
+        this.reset(f);
+      }, exception => this.errorHandler.handle(exception));
   }
 
   reset(f: NgForm) {
-
+    this.newCandidate = new NewCandidate();
+    f.reset();
   }
 
   setElection(uuid: string) {
-    this.electionService.getAllElectionPositionsResume(uuid)
+    this.electionService.getAllElectionPositionsSummary(uuid)
       .subscribe(electionPositionsResume => {
         this.electionPositions = electionPositionsResume.map(e => ({label: e.name, value: e.uuid}));
       }, exception => this.errorHandler.handle(exception));
@@ -51,7 +65,7 @@ export class CandidateFormComponent implements OnInit {
     this.upload.nativeElement.click();
   }
 
-  fileChangeEvent($event: Event) {
-    this.imageChangedEvent = event;
+  onFileSelected(target: EventTarget) {
+    this.fileToUpload = (<HTMLInputElement>target).files[0];
   }
 }
