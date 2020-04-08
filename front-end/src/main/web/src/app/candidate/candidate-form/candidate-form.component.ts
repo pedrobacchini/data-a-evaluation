@@ -1,13 +1,14 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/components/common/api';
 
 import { NewCandidate } from '../new-candidate.class';
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { CandidateService, UploadUrl } from '../candidate.service';
+import { CandidateService } from '../candidate.service';
 import { Candidate } from '../candidate.class';
 
 @Component({
@@ -45,11 +46,16 @@ export class CandidateFormComponent implements OnInit {
       .pipe(
         finalize(() => this.loading = false),
         switchMap((candidate: Candidate) => {
-          return this.candidateService
-            .uploadPicture(candidate.uuid, this.fileToUpload, this.newCandidate.picture);
+          if (this.fileToUpload) {
+            return this.candidateService
+              .uploadPicture(candidate.uuid, this.fileToUpload, this.newCandidate.picture);
+          } else {
+            return of(null);
+          }
         })
       )
       .subscribe(() => {
+        this.fileToUpload = undefined;
         this.candidateChange.emit(true);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
         this.reset(f);

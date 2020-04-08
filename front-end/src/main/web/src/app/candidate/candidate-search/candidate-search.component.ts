@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+
+import { ConfirmationService, MessageService } from 'primeng/components/common/api';
 
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
+import { CandidateService } from '../candidate.service';
 
 interface CandidateTable {
+  uuid;
   electionName;
   electionPositionName;
   candidateName;
@@ -20,9 +25,14 @@ export class CandidateSearchComponent implements OnInit {
   candidatesTable: CandidateTable[] = [];
   private rowElectionGroup: any;
   private rowElectionPositionGroup: any;
+  private editCandidate: CandidateTable;
+  private loading;
 
   constructor(private electionService: ElectionService,
-              private errorHandler: ErrorHandlerService) {
+              private errorHandler: ErrorHandlerService,
+              private confirmation: ConfirmationService,
+              private messageService: MessageService,
+              private candidateService: CandidateService) {
   }
 
   ngOnInit() {
@@ -33,6 +43,7 @@ export class CandidateSearchComponent implements OnInit {
           election.electionPositions.forEach(electionPosition => {
             electionPosition.candidates.forEach(candidate => {
               this.candidatesTable.push({
+                uuid: candidate.uuid,
                 electionName: election.name,
                 electionPositionName: electionPosition.name,
                 candidateName: candidate.name,
@@ -87,5 +98,20 @@ export class CandidateSearchComponent implements OnInit {
 
   sePictureError(event) {
     event.target.src = '/assets/images/avatars/avatar_2x.png';
+  }
+
+  confirmDelete(candidateTable: CandidateTable) {
+    this.confirmation.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.loading = true;
+        this.candidateService.delete(candidateTable.uuid)
+          .pipe(finalize(() => this.loading = false))
+          .subscribe(() => {
+            this.ngOnInit();
+            this.messageService.add({severity: 'success', detail: 'Removido com sucesso'});
+          }, exception => this.errorHandler.handle(exception));
+      }
+    });
   }
 }

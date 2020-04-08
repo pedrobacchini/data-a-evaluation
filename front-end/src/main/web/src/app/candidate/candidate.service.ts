@@ -40,4 +40,8 @@ export class CandidateService {
     formData.append('file', this.utilsService.dataURItoBlob(url, file.type), file.name);
     return this.http.put<UploadUrl>(`${this.candidateUrl}/${uuid}/picture`, formData);
   }
+
+  delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.candidateUrl}/${uuid}`);
+  }
 }

@@ -20,6 +20,7 @@
             <th>Cargo</th>
             <th style="width: 80px">Foto</th>
             <th>Canidato</th>
+            <th>Ações</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -40,9 +41,34 @@
                    alt="profile" (error)="sePictureError($event)">
             </td>
             <td>{{rowData.candidateName}}</td>
+            <td class="col-actions">
+              <button icon="pi pi-pencil"
+                      pButton
+                      pTooltip="Editar"
+                      tooltipPosition="top"
+                      (click)="editCandidate = rowData">
+              </button>
+              <button icon="pi pi-trash"
+                      pButton
+                      pTooltip="Excluir"
+                      tooltipPosition="top"
+                      (click)="confirmDelete(rowData)">
+              </button>
+            </td>
           </tr>
+        </ng-template>
+        <ng-template let-columns pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="td-emptymessage">
+              <b>Nenhum Candidato encontrado...</b>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          {{candidatesTable ? candidatesTable.length : 0}} Candidatos
         </ng-template>
       </p-table>
     </div>
   </div>
 </div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>
