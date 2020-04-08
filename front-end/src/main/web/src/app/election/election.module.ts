@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/components/button/button';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { ChipsModule } from 'primeng/components/chips/chips';
+import { LoadingModule } from 'ngx-loading';
 
 import { ElectionFormComponent } from './election-form/election-form.component';
 import { ElectionSearchComponent } from './election-search/election-search.component';
@@ -31,7 +32,8 @@ import { ElectionSearchComponent } from './election-search/election-search.compo
     DropdownModule,
     CalendarModule,
     TooltipModule,
-    ChipsModule
+    ChipsModule,
+    LoadingModule
   ]
 })
 export class ElectionModule {

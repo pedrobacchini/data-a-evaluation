@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { finalize } from 'rxjs/operators';
 
 import { MessageService } from 'primeng/components/common/api';
 import nestedObjectAssign from 'nested-object-assign';
@@ -21,7 +22,8 @@ export class ElectionFormComponent implements OnInit {
   private minEndDate = new Date();
   private ptBR = environment.ptBR;
   private election: Election;
-  electionPositions: string[];
+  private electionPositions: string[];
+  private loading;
 
   @Output() electionChange: EventEmitter<Election> = new EventEmitter();
 
@@ -46,7 +48,9 @@ export class ElectionFormComponent implements OnInit {
   }
 
   save(f: NgForm) {
+    this.loading = true;
     this.electionService.save(this.election)
+      .pipe(finalize(() => this.loading = false))
       .subscribe(election => {
         this.reset(f);
         this.electionChange.emit(election);

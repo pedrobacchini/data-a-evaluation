@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
 
@@ -13,15 +14,18 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionSearchComponent implements OnInit {
 
-  elections = new Map<string, Election>();
-  cols: any[];
-  editElection: Election = new Election();
+  private elections = new Map<string, Election>();
+  private cols: any[];
+  private editElection: Election = new Election();
+  private loading;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService,
               private messageService: MessageService,
               private confirmation: ConfirmationService) {
+    this.loading = true;
     this.electionService.getAllAvailable()
+      .pipe(finalize(() => this.loading = false))
       .subscribe(elections => {
         elections.map(election => {
           this.elections.set(election.uuid, election);
@@ -45,7 +49,9 @@ export class ElectionSearchComponent implements OnInit {
     this.confirmation.confirm({
       message: 'Tem certeza que deseja excluir?',
       accept: () => {
+        this.loading = true;
         this.electionService.delete(election.uuid)
+          .pipe(finalize(() => this.loading = false))
           .subscribe(() => {
             this.elections.delete(election.uuid);
             this.messageService.add({severity: 'success', detail: 'Removido com sucesso'});

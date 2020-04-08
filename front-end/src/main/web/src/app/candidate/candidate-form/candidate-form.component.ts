@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { NewCandidate } from '../new-candidate.class';
@@ -12,9 +12,13 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class CandidateFormComponent implements OnInit {
 
-  newCandidate: NewCandidate = new NewCandidate();
-  elections = [];
-  electionPositions = [];
+  @ViewChild('upload')
+  private upload: ElementRef;
+  private newCandidate: NewCandidate = new NewCandidate();
+  private elections = [];
+  private electionPositions = [];
+  private imageChangedEvent: any;
+  private loading;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService) {
@@ -28,6 +32,7 @@ export class CandidateFormComponent implements OnInit {
   }
 
   save(f: NgForm) {
+    // const file: File = this.imageChangedEvent.target.files[0];
 
   }
 
@@ -43,10 +48,10 @@ export class CandidateFormComponent implements OnInit {
   }
 
   choose() {
-    console.log('choose');
+    this.upload.nativeElement.click();
   }
 
   fileChangeEvent($event: Event) {
-    console.log('fileChangeEvent');
+    this.imageChangedEvent = event;
   }
 }

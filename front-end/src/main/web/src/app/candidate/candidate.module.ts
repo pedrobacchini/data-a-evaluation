@@ -7,9 +7,11 @@ import { TableModule } from 'primeng/components/table/table';
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { ButtonModule } from 'primeng/components/button/button';
+import { CardModule } from 'primeng/components/card/card';
 
 import { CandidateSearchComponent } from './candidate-search/candidate-search.component';
 import { CandidateFormComponent } from './candidate-form/candidate-form.component';
+import { LoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { CandidateFormComponent } from './candidate-form/candidate-form.componen
     TableModule,
     InputTextModule,
     DropdownModule,
-    ButtonModule
+    ButtonModule,
+    CardModule,
+    LoadingModule
   ]
 })
 export class CandidateModule {
