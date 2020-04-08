@@ -1,6 +1,6 @@
 export class NewCandidate {
   uuid: string;
   name: string;
-  picture: string;
+  picture: any;
   electionPositionUuid: string;
 }

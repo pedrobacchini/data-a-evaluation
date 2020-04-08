@@ -9,6 +9,7 @@ import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdia
 import { ErrorHandlerService } from './error-handler.service';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { UtilsService } from './utils.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     ConfirmationService,
     ErrorHandlerService,
     MessageService,
-    DatePipe
+    DatePipe,
+    UtilsService
   ]
 })
 export class CoreModule {

@@ -56,7 +56,7 @@ public class CandidateResource {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{uuid}/picture")
+    @PutMapping("/{uuid}/picture")
     public ResponseEntity<Void> uploadProfilePicture(@PathVariable("uuid") String uuid,
                                                      @RequestParam(name = "file") MultipartFile file) throws IOException, URISyntaxException {
         Candidate candidate = candidateService.getById(UUID.fromString(uuid));

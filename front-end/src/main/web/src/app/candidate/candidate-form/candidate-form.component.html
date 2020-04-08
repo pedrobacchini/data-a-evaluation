@@ -8,11 +8,11 @@
       <div class="ui-g-3 ui-g-nopad">
         <p-card>
           <div style="text-align: center">
-            <img width="145" height="145" class="profile-round"
+            <img width="145" height="145" class="profile-round" style="border-radius: 100%"
                  [src]="newCandidate?.picture || '/assets/images/avatars/avatar_2x.png'"
                  alt="">
             <div>
-              <button class="button-pad" label="Trocar Foto" pButton (click)="choose()"></button>
+              <button class="button-pad" label="Trocar Foto" type="button" pButton (click)="choose()"></button>
               <input accept="image/jpeg, image/png"
                      id="upload"
                      #upload

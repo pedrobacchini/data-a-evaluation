@@ -1,13 +1,14 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 
 import { MessageService } from 'primeng/components/common/api';
 
 import { NewCandidate } from '../new-candidate.class';
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
-import { CandidateService } from '../candidate.service';
+import { CandidateService, UploadUrl } from '../candidate.service';
+import { Candidate } from '../candidate.class';
 
 @Component({
   selector: 'app-candidate-form',
@@ -41,7 +42,13 @@ export class CandidateFormComponent implements OnInit {
   save(f: NgForm) {
     this.loading = true;
     this.candidateService.save(this.newCandidate)
-      .pipe(finalize(() => this.loading = false))
+      .pipe(
+        finalize(() => this.loading = false),
+        switchMap((candidate: Candidate) => {
+          return this.candidateService
+            .uploadPicture(candidate.uuid, this.fileToUpload, this.newCandidate.picture);
+        })
+      )
       .subscribe(() => {
         this.candidateChange.emit(true);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
@@ -67,5 +74,11 @@ export class CandidateFormComponent implements OnInit {
 
   onFileSelected(target: EventTarget) {
     this.fileToUpload = (<HTMLInputElement>target).files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    reader.onload = (_event) => {
+      this.newCandidate.picture = reader.result;
+    };
   }
 }
