@@ -35,6 +35,7 @@
           <label>Eleição</label>
           <p-dropdown name="election" [options]="elections"
                       placeholder="Selecione uma eleição" [autoWidth]="false"
+                      [(ngModel)]="newCandidate.electionUuid"
                       (onChange)="setElection($event.value)"
                       required>
           </p-dropdown>
@@ -58,3 +59,4 @@
   </form>
 </div>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>
+<!--<pre>{{newCandidate | json}}</pre>-->

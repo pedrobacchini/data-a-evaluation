@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Candidate } from './candidate.class';
 import { NewCandidate } from './new-candidate.class';
 import { UtilsService } from '../core/utils.service';
+import { CandidateDTO } from './candidate-dto.class';
 
 export class UploadUrl {
   url: string;
@@ -43,5 +44,9 @@ export class CandidateService {
 
   delete(uuid: string): Observable<void> {
     return this.http.delete<void>(`${this.candidateUrl}/${uuid}`);
+  }
+
+  find(uuid: string): Observable<CandidateDTO> {
+    return this.http.get<CandidateDTO>(`${this.candidateUrl}/${uuid}`);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -26,6 +26,20 @@ export class CandidateFormComponent implements OnInit {
   private fileToUpload: File = null;
   private loading;
   @Output() candidateChange: EventEmitter<boolean> = new EventEmitter();
+
+  @Input() set editCandidate(uuid: string) {
+    if (uuid) {
+      this.loading = true;
+      this.candidateService.find(uuid)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(candidate => {
+          this.newCandidate.uuid = candidate.uuid;
+          this.newCandidate.name = candidate.name;
+          this.newCandidate.electionUuid = candidate.electionPosition.election.uuid;
+          this.newCandidate.electionPositionUuid = candidate.electionPosition.uuid;
+        }, exception => this.errorHandler.handle(exception));
+    }
+  }
 
   constructor(private electionService: ElectionService,
               private candidateService: CandidateService,

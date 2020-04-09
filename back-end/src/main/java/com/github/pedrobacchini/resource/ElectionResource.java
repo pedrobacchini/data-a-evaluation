@@ -1,11 +1,13 @@
 package com.github.pedrobacchini.resource;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pedrobacchini.dto.ElectionDTO;
 import com.github.pedrobacchini.dto.ElectionPositionSummary;
 import com.github.pedrobacchini.dto.ElectionSummary;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
+import com.github.pedrobacchini.json.View;
 import com.github.pedrobacchini.service.ElectionPositionService;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +32,11 @@ public class ElectionResource {
     private final ElectionPositionService electionPositionService;
 
     @GetMapping(params = "started")
+    @JsonView(View.Election.class)
     public List<Election> getAllStarted() { return electionService.getAllStarted(); }
 
     @GetMapping(params = "available")
+    @JsonView(View.Election.class)
     public List<Election> getAllAvailable() { return electionService.getAllAvailable(); }
 
     @GetMapping(params = {"available", "summary"})
@@ -45,12 +49,14 @@ public class ElectionResource {
     }
 
     @GetMapping(path = "/{uuid}")
+    @JsonView(View.Election.class)
     public ResponseEntity<Election> getById(@PathVariable("uuid") String uuid) {
         Election election = electionService.getById(UUID.fromString(uuid));
         return ResponseEntity.ok(election);
     }
 
     @PostMapping
+    @JsonView(View.Election.class)
     public ResponseEntity<Election> create(@RequestBody @Valid ElectionDTO electionDTO, HttpServletResponse response) {
         Election createdElection = electionService.create(fromDTO(electionDTO));
         publisher.publishEvent(new ResourceCreatedEvent(this, response, createdElection.getUuid()));
@@ -58,6 +64,7 @@ public class ElectionResource {
     }
 
     @PutMapping(value = "/{uuid}")
+    @JsonView(View.Election.class)
     public ResponseEntity<Election> update(@PathVariable("uuid") String uuid, @RequestBody @Valid ElectionDTO electionDTO) {
         Election election = electionService.update(UUID.fromString(uuid), fromDTO(electionDTO));
         return ResponseEntity.ok(election);

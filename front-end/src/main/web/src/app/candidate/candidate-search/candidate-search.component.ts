@@ -7,11 +7,11 @@ import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { CandidateService } from '../candidate.service';
 
-interface CandidateTable {
-  uuid;
-  electionName;
-  electionPositionName;
-  candidateName;
+class CandidateTable {
+  uuid: string;
+  electionName: string;
+  electionPositionName: string;
+  candidateName: string;
   picture;
 }
 
@@ -25,7 +25,7 @@ export class CandidateSearchComponent implements OnInit {
   candidatesTable: CandidateTable[] = [];
   private rowElectionGroup: any;
   private rowElectionPositionGroup: any;
-  private editCandidate: CandidateTable;
+  private editCandidate: CandidateTable = new CandidateTable();
   private loading;
 
   constructor(private electionService: ElectionService,

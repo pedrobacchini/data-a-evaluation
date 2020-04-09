@@ -1,6 +1,7 @@
 package com.github.pedrobacchini.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.github.pedrobacchini.json.View;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,21 +25,24 @@ public class ElectionPosition implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @JsonView({View.Election.class, View.Candidate.class})
     private UUID uuid;
 
     @NotNull
     @Setter
     @Column(nullable = false, length = 100)
+    @JsonView({View.Election.class, View.Candidate.class})
     private String name;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false )
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "election_uuid")
+    @JsonView(View.Candidate.class)
     private Election election;
 
+    @JsonView(View.Election.class)
     @OneToMany(mappedBy = "electionPosition", fetch = FetchType.EAGER)
-    private List<Candidate> candidates = new ArrayList<>();
+    private final List<Candidate> candidates = new ArrayList<>();
 
     public ElectionPosition(UUID uuid) { this.uuid = uuid; }
 
