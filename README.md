@@ -1,27 +1,62 @@
-# Web
+# Execute o aplicativo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.9.
+Run `mvn clean install`
 
-## Development server
+A partir do diretório raiz do projeto. Isso irá gerar um arquivo war no diretório back-end/target. Ele pode ser implantado no servidor Tomcat e o aplicativo pode ser visualizado.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Para executar o aplicativo Spring Boot usando o Maven, execute o seguinte comando no diretório back-end.
 
-## Code scaffolding
+Run `mvn spring-boot: run`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Depois que o aplicativo for iniciado, poderemos ver a página de boas-vindas usando http://localhost:8080.
 
-## Build
+# Detalhamento do projeto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+# Público alvo
+O aplicativo tem como público alvo pessoas que trabalham dentro de entidades de previdência
+complementar e que desejam realizar eleições para preencher cargos de dentro da própria
+entidade.
+EscopoO escopo abaixo pode ser considerado tanto para as atividades de frontend e backend. Não
+precisa se preocupar com uma tela de login/autenticação ou cadastro de usuários. Todas as
+telas desenvolvidas podem estar visíveis a todos (telas administrativas e as telas do
+eleitor/votante).
+# 1.Cadastro da Eleição
+Descrição: Função que cadastra uma eleição a ser realizada. Este cadastro deve conter o nome
+da eleição e as datas de início e fim dela.
+Detalhamento: todos os campos devem ser obrigatórios. Caso algum campo não seja
+preenchido, alertar o usuário da obrigatoriedade do preenchimento.
+#2. Cadastro do Cargo
+Descrição: Função que cadastra um cargo a ser preenchido pelos candidatos. Este cadastro deve
+conter somente o nome do cargo.
+Detalhamento: o nome do cargo é obrigatório. Caso o campo não seja preenchido, alertar o
+usuário da obrigatoriedade do preenchimento.
+#3.Cadastro do Candidato
+Descrição: Função que cadastra um candidato para concorrer a um cargo de uma eleição. Este
+cadastro deve conter o nome do candidato. Os cargos cadastrados devem ser exibidos para que
+seja selecionado dentro de um combo (select). A tela deve permitir o upload da foto do
+candidato.
+Detalhamento: todos os campos devem ser obrigatórios. Caso algum campo não seja
+preenchido, alertar o usuário da obrigatoriedade do preenchimento. Ao realizar o upload da
+foto a mesma deve ser exibida na tela em uma área reservada para este fim.
+#4.Área do eleitor
+Descrição: Área que servirá para realizar as votações.
+Detalhamento: Como a aplicação proposta não possui autenticação, ao entrar na área do eleitor
+serão solicitados o nome e o CPF da pessoa votante. A tela deverá apresentar dados somente se
+existir uma eleição cadastrada e a data atual deve estar dentro do intervalo cadastrado na
+eleição. A tela deverá apresentar os cargos cadastrados com os respectivos candidatos. A forma
+de organizar estas informações fica a critério do desenvolvedor. Pode ser tudo numa mesma
+tela ou separadas por diferentes telas. O usuário poderá selecionar apenas um candidato de
+cada cargo obrigatoriamente. Ao final o usuário confirmará em um único botão as opções
+selecionadas. A aplicação salvará as informações (incluindo o nome e o CPF do votante) e gerará
+um número de protocolo alfanumérico de 16 dígitos separados por um traço a cada 4 dígitos. O
+protocolo deve ser exibido ao votante e persistido em banco de dados também. O usuário não
+poderá mais alterar o voto após confirmar os votos
+#5.Relatórios
+Descrição: Função que disponibilizará o resultado parcial e final da eleição.
+Detalhamento: O relatório parcial poderá ser emitido a qualquer tempo durante o andamento
+das eleições. Após o término e antes do início das eleições o relatório parcial não pode ser
+emitido. Já o relatório final poderá ser emitido somente após o término das eleições. O formato
+de emissão do relatório pode ser em qualquer formato: arquivo para download CSV, TXT, ou
+exibido direto na tela. O relatório parcial deve apresentar somente a quantidade de pessoas que
+já votaram. O relatório final deve apresentar a quantidade de pessoas que já votaram bem comoa quantidade de votos que os candidatos receberam, organizados pelo cargo e ordenados pelo
+número de votos recebidos.
