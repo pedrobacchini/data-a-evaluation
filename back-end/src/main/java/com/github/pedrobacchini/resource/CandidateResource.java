@@ -71,7 +71,7 @@ public class CandidateResource {
     }
 
     private Candidate fromDTO(CandidateDTO candidateDTO) {
-        ElectionPosition electionPosition = new ElectionPosition(candidateDTO.getElectionPositionUuid());
+        ElectionPosition electionPosition = new ElectionPosition(candidateDTO.getElectionPosition().getUuid());
         return new Candidate(candidateDTO.getName(), electionPosition);
     }
 }

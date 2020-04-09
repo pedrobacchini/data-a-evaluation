@@ -9,8 +9,8 @@
         <p-card>
           <div style="text-align: center">
             <img width="145" height="145" class="profile-round" style="border-radius: 100%"
-                 [src]="newCandidate?.picture || '/assets/images/avatars/avatar_2x.png'"
-                 alt="">
+                 [src]="candidate?.picture || '/assets/images/avatars/avatar_2x.png'"
+                 alt="" (error)="sePictureError($event)">
             <div>
               <button class="button-pad" label="Trocar Foto" type="button" pButton (click)="choose()"></button>
               <input accept="image/jpeg, image/png"
@@ -27,7 +27,7 @@
       <div class="ui-g-9">
         <div class="ui-g-12 ui-fluid">
           <label>Name
-            <input [(ngModel)]="newCandidate.name" name="name" pInputText required type="text">
+            <input [(ngModel)]="candidate.name" name="name" pInputText required type="text">
           </label>
         </div>
 
@@ -35,7 +35,7 @@
           <label>Eleição</label>
           <p-dropdown name="election" [options]="elections"
                       placeholder="Selecione uma eleição" [autoWidth]="false"
-                      [(ngModel)]="newCandidate.electionUuid"
+                      [(ngModel)]="candidate.electionPosition.election.uuid"
                       (onChange)="setElection($event.value)"
                       required>
           </p-dropdown>
@@ -45,7 +45,7 @@
           <label>Cargo</label>
           <p-dropdown name="election" [options]="electionPositions"
                       placeholder="Selecione um cargo" [autoWidth]="false"
-                      [(ngModel)]="newCandidate.electionPositionUuid"
+                      [(ngModel)]="candidate.electionPosition.uuid"
                       required>
           </p-dropdown>
         </div>
@@ -59,4 +59,3 @@
   </form>
 </div>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>
-<!--<pre>{{newCandidate | json}}</pre>-->

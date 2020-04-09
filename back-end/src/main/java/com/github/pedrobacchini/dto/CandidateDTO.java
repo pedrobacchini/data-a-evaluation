@@ -12,5 +12,12 @@ public class CandidateDTO {
     private String name;
 
     @NotNull
-    private UUID electionPositionUuid;
+    private ElectionPosition electionPosition;
+
+    @Getter
+    public static class ElectionPosition {
+
+        @NotNull
+        private UUID uuid;
+    }
 }

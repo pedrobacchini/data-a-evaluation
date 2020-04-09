@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/components/common/api';
 
-import { NewCandidate } from '../new-candidate.class';
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { CandidateService } from '../candidate.service';
@@ -20,7 +19,7 @@ export class CandidateFormComponent implements OnInit {
 
   @ViewChild('upload')
   private upload: ElementRef;
-  private newCandidate: NewCandidate = new NewCandidate();
+  private candidate: Candidate = new Candidate();
   private elections = [];
   private electionPositions = [];
   private fileToUpload: File = null;
@@ -33,10 +32,7 @@ export class CandidateFormComponent implements OnInit {
       this.candidateService.find(uuid)
         .pipe(finalize(() => this.loading = false))
         .subscribe(candidate => {
-          this.newCandidate.uuid = candidate.uuid;
-          this.newCandidate.name = candidate.name;
-          this.newCandidate.electionUuid = candidate.electionPosition.election.uuid;
-          this.newCandidate.electionPositionUuid = candidate.electionPosition.uuid;
+          this.candidate = candidate;
         }, exception => this.errorHandler.handle(exception));
     }
   }
@@ -56,13 +52,13 @@ export class CandidateFormComponent implements OnInit {
 
   save(f: NgForm) {
     this.loading = true;
-    this.candidateService.save(this.newCandidate)
+    this.candidateService.save(this.candidate)
       .pipe(
         finalize(() => this.loading = false),
         switchMap((candidate: Candidate) => {
           if (this.fileToUpload) {
             return this.candidateService
-              .uploadPicture(candidate.uuid, this.fileToUpload, this.newCandidate.picture);
+              .uploadPicture(candidate.uuid, this.fileToUpload, this.candidate.picture);
           } else {
             return of(null);
           }
@@ -77,7 +73,7 @@ export class CandidateFormComponent implements OnInit {
   }
 
   reset(f: NgForm) {
-    this.newCandidate = new NewCandidate();
+    this.candidate = new Candidate();
     f.reset();
   }
 
@@ -98,7 +94,11 @@ export class CandidateFormComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.fileToUpload);
     reader.onload = (_event) => {
-      this.newCandidate.picture = reader.result;
+      this.candidate.picture = reader.result;
     };
+  }
+
+  sePictureError(event) {
+    event.target.src = '/assets/images/avatars/avatar_2x.png';
   }
 }

@@ -1,14 +1,14 @@
 export class Candidate {
   uuid: string;
   name: string;
-  picture: string;
-  electionPosition: ElectionPositionCandidate;
+  picture;
+  electionPosition: ElectionPositionCandidate = new ElectionPositionCandidate();
 }
 
 export class ElectionPositionCandidate {
   uuid: string;
   name: string;
-  election: ElectionCandidate;
+  election: ElectionCandidate = new ElectionCandidate();
 }
 
 export class ElectionCandidate {

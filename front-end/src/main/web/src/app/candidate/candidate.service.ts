@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
-import { NewCandidate } from './new-candidate.class';
 import { UtilsService } from '../core/utils.service';
 import { Candidate } from './candidate.class';
 
@@ -23,16 +22,16 @@ export class CandidateService {
     this.candidateUrl = `${environment.apiUrl}/candidates`;
   }
 
-  save(newCandidate: NewCandidate): Observable<Candidate> {
-    return newCandidate.uuid ? this.update(newCandidate.uuid, newCandidate) : this.create(newCandidate);
+  save(candidate: Candidate): Observable<Candidate> {
+    return candidate.uuid ? this.update(candidate.uuid, candidate) : this.create(candidate);
   }
 
-  private update(uuid: string, newCandidate: NewCandidate): Observable<Candidate> {
-    return this.http.put<Candidate>(`${this.candidateUrl}/${uuid}`, newCandidate);
+  private update(uuid: string, candidate: Candidate): Observable<Candidate> {
+    return this.http.put<Candidate>(`${this.candidateUrl}/${uuid}`, candidate);
   }
 
-  private create(newCandidate: NewCandidate): Observable<Candidate> {
-    return this.http.post<Candidate>(this.candidateUrl, newCandidate);
+  private create(candidate: Candidate): Observable<Candidate> {
+    return this.http.post<Candidate>(this.candidateUrl, candidate);
   }
 
   uploadPicture(uuid: string, file: File, url: string): Observable<UploadUrl> {
