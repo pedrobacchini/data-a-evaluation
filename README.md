@@ -20,17 +20,20 @@ EscopoO escopo abaixo pode ser considerado tanto para as atividades de frontend 
 precisa se preocupar com uma tela de login/autenticação ou cadastro de usuários. Todas as
 telas desenvolvidas podem estar visíveis a todos (telas administrativas e as telas do
 eleitor/votante).
+
 # 1.Cadastro da Eleição
 Descrição: Função que cadastra uma eleição a ser realizada. Este cadastro deve conter o nome
 da eleição e as datas de início e fim dela.
 Detalhamento: todos os campos devem ser obrigatórios. Caso algum campo não seja
 preenchido, alertar o usuário da obrigatoriedade do preenchimento.
-#2. Cadastro do Cargo
+
+# 2. Cadastro do Cargo
 Descrição: Função que cadastra um cargo a ser preenchido pelos candidatos. Este cadastro deve
 conter somente o nome do cargo.
 Detalhamento: o nome do cargo é obrigatório. Caso o campo não seja preenchido, alertar o
 usuário da obrigatoriedade do preenchimento.
-#3.Cadastro do Candidato
+
+# 3.Cadastro do Candidato
 Descrição: Função que cadastra um candidato para concorrer a um cargo de uma eleição. Este
 cadastro deve conter o nome do candidato. Os cargos cadastrados devem ser exibidos para que
 seja selecionado dentro de um combo (select). A tela deve permitir o upload da foto do
@@ -38,7 +41,8 @@ candidato.
 Detalhamento: todos os campos devem ser obrigatórios. Caso algum campo não seja
 preenchido, alertar o usuário da obrigatoriedade do preenchimento. Ao realizar o upload da
 foto a mesma deve ser exibida na tela em uma área reservada para este fim.
-#4.Área do eleitor
+
+# 4.Área do eleitor
 Descrição: Área que servirá para realizar as votações.
 Detalhamento: Como a aplicação proposta não possui autenticação, ao entrar na área do eleitor
 serão solicitados o nome e o CPF da pessoa votante. A tela deverá apresentar dados somente se
@@ -51,7 +55,8 @@ selecionadas. A aplicação salvará as informações (incluindo o nome e o CPF 
 um número de protocolo alfanumérico de 16 dígitos separados por um traço a cada 4 dígitos. O
 protocolo deve ser exibido ao votante e persistido em banco de dados também. O usuário não
 poderá mais alterar o voto após confirmar os votos
-#5.Relatórios
+
+# 5.Relatórios
 Descrição: Função que disponibilizará o resultado parcial e final da eleição.
 Detalhamento: O relatório parcial poderá ser emitido a qualquer tempo durante o andamento
 das eleições. Após o término e antes do início das eleições o relatório parcial não pode ser
