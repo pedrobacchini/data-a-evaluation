@@ -17,13 +17,13 @@ import { Candidate } from '../candidate.class';
 })
 export class CandidateFormComponent implements OnInit {
 
-  @ViewChild('upload')
-  private upload: ElementRef;
-  private candidate: Candidate = new Candidate();
-  private elections = [];
-  private electionPositions = [];
+  @ViewChild('upload') private upload: ElementRef;
   private fileToUpload: File = null;
-  private loading;
+  candidate: Candidate = new Candidate();
+  elections = [];
+  electionPositions = [];
+  loading;
+
   @Output() candidateChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() set editCandidate(uuid: string) {

@@ -18,12 +18,12 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionFormComponent implements OnInit {
 
-  private minStartDate = new Date();
-  private minEndDate = new Date();
-  private ptBR = environment.ptBR;
-  private election: Election;
-  private electionPositions: string[];
-  private loading;
+  minStartDate = new Date();
+  minEndDate = new Date();
+  ptBR = environment.ptBR;
+  election: Election;
+  electionPositions: string[];
+  loading;
 
   @Output() electionChange: EventEmitter<Election> = new EventEmitter();
 

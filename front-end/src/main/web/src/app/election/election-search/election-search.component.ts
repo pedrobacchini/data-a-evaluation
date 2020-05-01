@@ -14,10 +14,10 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionSearchComponent implements OnInit {
 
-  private elections = new Map<string, Election>();
-  private cols: any[];
-  private editElection: Election = new Election();
-  private loading;
+  elections = new Map<string, Election>();
+  cols: any[];
+  editElection: Election = new Election();
+  loading;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService,

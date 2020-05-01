@@ -36,11 +36,11 @@ export class ElectionService {
     return this.http.get<Election[]>(this.electionUrl + '?available');
   }
 
-  getAllAvailableSummary(): Observable<ElectionResume[]> {
+  getAllAvailableSummary(): Observable<ElectionSummary[]> {
     return this.http.get<Election[]>(this.electionUrl + '?available&summary');
   }
 
-  getAllElectionPositionsSummary(uuid: string): Observable<ElectionPositionResume[]> {
+  getAllElectionPositionsSummary(uuid: string): Observable<ElectionPositionSummary[]> {
     return this.http.get<Election[]>(`${this.electionUrl}/${uuid}/election-positions?summary`);
   }
 

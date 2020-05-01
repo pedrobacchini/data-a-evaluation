@@ -23,10 +23,10 @@ class CandidateTable {
 export class CandidateSearchComponent implements OnInit {
 
   candidatesTable: CandidateTable[] = [];
-  private rowElectionGroup: any;
-  private rowElectionPositionGroup: any;
-  private editCandidate: CandidateTable = new CandidateTable();
-  private loading;
+  rowElectionGroup: any;
+  rowElectionPositionGroup: any;
+  editCandidate: CandidateTable = new CandidateTable();
+  loading;
 
   constructor(private electionService: ElectionService,
               private errorHandler: ErrorHandlerService,
