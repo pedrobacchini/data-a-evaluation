@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MessageService } from 'primeng/components/common/api';
 import * as moment from 'moment';
 
 import { ElectionService } from '../election/election.service';
 import { ErrorHandlerService } from '../core/error-handler.service';
 import { Election } from '../election/election.class';
+import { ElectionStarted } from '../election/election-started.class';
 
 @Component({
   selector: 'app-report',
@@ -14,16 +14,15 @@ import { Election } from '../election/election.class';
 })
 export class ReportComponent implements OnInit {
 
-  elections: Election[];
+  electionsStarted: ElectionStarted[];
 
   cols: any[];
 
   constructor(private electionService: ElectionService,
-              private errorHandler: ErrorHandlerService,
-              private messageService: MessageService) {
+              private errorHandler: ErrorHandlerService) {
     this.electionService.getAllStarted()
       .subscribe(elections => {
-        this.elections = elections;
+        this.electionsStarted = elections;
       }, exception => this.errorHandler.handle(exception));
   }
 

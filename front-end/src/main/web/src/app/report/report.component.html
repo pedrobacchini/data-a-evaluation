@@ -5,7 +5,7 @@
     </div>
     <div class="ui-g">
       <div class="ui-g-12">
-        <p-table #dt [columns]="cols" [value]="elections">
+        <p-table #dt [columns]="cols" [value]="electionsStarted">
           <ng-template pTemplate="caption">
             <div style="text-align: right">
               <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
@@ -47,7 +47,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="summary">
-            {{elections ? elections.length : 0}} Eleições
+            {{electionsStarted ? electionsStarted.length : 0}} Eleições
           </ng-template>
         </p-table>
       </div>

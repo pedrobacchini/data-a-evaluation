@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 import { Election } from './election.class';
+import { ElectionStarted } from './election-started.class';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,8 @@ export class ElectionService {
     return this.http.post<Election>(this.electionUrl, election);
   }
 
-  getAllStarted(): Observable<Election[]> {
-    return this.http.get<Election[]>(this.electionUrl + '?started');
+  getAllStarted(): Observable<ElectionStarted[]> {
+    return this.http.get<ElectionStarted[]>(this.electionUrl + '?started');
   }
 
   getAllAvailable(): Observable<Election[]> {
