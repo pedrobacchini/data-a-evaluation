@@ -44,7 +44,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Candidate create(Candidate Candidate) { return candidateRepository.save(Candidate); }
+    public Candidate create(Candidate candidate) { return candidateRepository.save(candidate); }
 
     @Override
     public Candidate update(UUID uuid, Candidate candidate) {

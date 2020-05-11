@@ -1,7 +1,7 @@
 package com.github.pedrobacchini.service.impl;
 
 import com.github.pedrobacchini.config.LocaleMessageSource;
-import com.github.pedrobacchini.dto.ElectionSummary;
+import com.github.pedrobacchini.dto.ElectionSelection;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.exception.IntegrityViolationException;
 import com.github.pedrobacchini.exception.NotFoundException;
@@ -25,16 +25,13 @@ public class ElectionServiceImpl implements ElectionService {
     private final LocaleMessageSource localeMessageSource;
 
     @Override
-    public List<Election> getAll() { return electionRepository.findAll(); }
-
-    @Override
     public List<Election> getAllAvailable() {
-        return electionRepository.findAllByStartDateIsAfter(LocalDate.now());
+        return electionRepository.findAllByStartDateIsAfter(LocalDate.now(), Election.class);
     }
 
     @Override
-    public List<ElectionSummary> getAllAvailableSummary() {
-        return electionRepository.findAllByStartDateIsAfterSummary(LocalDate.now());
+    public List<ElectionSelection> getAllAvailableSelection() {
+        return electionRepository.findAllByStartDateIsAfter(LocalDate.now(), ElectionSelection.class);
     }
 
     @Override

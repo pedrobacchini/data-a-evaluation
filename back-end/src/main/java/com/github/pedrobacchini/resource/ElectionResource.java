@@ -2,12 +2,13 @@ package com.github.pedrobacchini.resource;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pedrobacchini.dto.ElectionDTO;
-import com.github.pedrobacchini.dto.ElectionPositionSummary;
-import com.github.pedrobacchini.dto.ElectionSummary;
+import com.github.pedrobacchini.dto.ElectionPositionSelection;
+import com.github.pedrobacchini.dto.ElectionStarted;
+import com.github.pedrobacchini.dto.ElectionSelection;
 import com.github.pedrobacchini.entity.Election;
-import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
 import com.github.pedrobacchini.json.View;
+import com.github.pedrobacchini.mapper.ElectionMapper;
 import com.github.pedrobacchini.service.ElectionPositionService;
 import com.github.pedrobacchini.service.ElectionService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,20 +30,23 @@ public class ElectionResource {
     private final ElectionService electionService;
     private final ApplicationEventPublisher publisher;
     private final ElectionPositionService electionPositionService;
+    private final ElectionMapper electionMapper;
 
     @GetMapping(params = "started")
-    @JsonView(View.Election.class)
-    public List<Election> getAllStarted() { return electionService.getAllStarted(); }
+    public List<ElectionStarted> getAllStarted() {
+        List<Election> allStarted = electionService.getAllStarted();
+        return electionMapper.fromEntityList(allStarted);
+    }
 
     @GetMapping(params = "available")
     @JsonView(View.Election.class)
     public List<Election> getAllAvailable() { return electionService.getAllAvailable(); }
 
-    @GetMapping(params = {"available", "summary"})
-    public List<ElectionSummary> getAllAvailableSummary() { return electionService.getAllAvailableSummary(); }
+    @GetMapping(params = {"available", "selection"})
+    public List<ElectionSelection> getAllAvailableSelection() { return electionService.getAllAvailableSelection(); }
 
-    @GetMapping(params = "summary", value = "/{uuid}/election-positions")
-    public List<ElectionPositionSummary> getAllElectionPositionsSummary(@PathVariable("uuid") String uuid) {
+    @GetMapping(params = "selection", value = "/{uuid}/election-positions")
+    public List<ElectionPositionSelection> getAllElectionPositionsSelection(@PathVariable("uuid") String uuid) {
         Election election = electionService.getById(UUID.fromString(uuid));
         return electionPositionService.getAllByElection(election);
     }
@@ -58,15 +61,17 @@ public class ElectionResource {
     @PostMapping
     @JsonView(View.Election.class)
     public ResponseEntity<Election> create(@RequestBody @Valid ElectionDTO electionDTO, HttpServletResponse response) {
-        Election createdElection = electionService.create(fromDTO(electionDTO));
-        publisher.publishEvent(new ResourceCreatedEvent(this, response, createdElection.getUuid()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdElection);
+        Election election = electionMapper.fromDTO(electionDTO);
+        election = electionService.create(election);
+        publisher.publishEvent(new ResourceCreatedEvent(this, response, election.getUuid()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(election);
     }
 
     @PutMapping(value = "/{uuid}")
     @JsonView(View.Election.class)
     public ResponseEntity<Election> update(@PathVariable("uuid") String uuid, @RequestBody @Valid ElectionDTO electionDTO) {
-        Election election = electionService.update(UUID.fromString(uuid), fromDTO(electionDTO));
+        Election election = electionMapper.fromDTO(electionDTO);
+        election = electionService.update(UUID.fromString(uuid), election);
         return ResponseEntity.ok(election);
     }
 
@@ -74,14 +79,5 @@ public class ElectionResource {
     public ResponseEntity<Void> delete(@PathVariable("uuid") String uuid) {
         electionService.delete(UUID.fromString(uuid));
         return ResponseEntity.noContent().build();
-    }
-
-    private Election fromDTO(ElectionDTO electionDTO) {
-        Election election = new Election(electionDTO.getName(), electionDTO.getStartDate(), electionDTO.getFinishDate());
-        List<ElectionPosition> electionPositions = electionDTO.getElectionPositions().stream()
-                .map(electionPositionDTO -> new ElectionPosition(electionPositionDTO.getUuid(), electionPositionDTO.getName()))
-                .collect(Collectors.toList());
-        election.addAllElectionPositions(electionPositions);
-        return election;
     }
 }

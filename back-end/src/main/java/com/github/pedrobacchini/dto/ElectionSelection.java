@@ -2,7 +2,7 @@ package com.github.pedrobacchini.dto;
 
 import java.util.UUID;
 
-public interface ElectionPositionSummary {
+public interface ElectionSelection {
 
     UUID getUuid();
 

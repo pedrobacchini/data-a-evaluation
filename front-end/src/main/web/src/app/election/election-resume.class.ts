@@ -1,4 +1,4 @@
-class ElectionSummary {
+class ElectionSelection {
   uuid: string;
   name: string;
 }

@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
+@Getter
 @ToString
 @Table(name = "elections")
 @NoArgsConstructor //For Hibernate
@@ -23,26 +24,22 @@ public class Election implements Serializable {
     private static final long serialVersionUID = -3822373709321158227L;
 
     @Id
-    @Getter
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @JsonView({View.Election.class, View.Candidate.class})
     private UUID uuid;
 
-    @Getter
     @Setter
     @Column(nullable = false, length = 100)
     @JsonView({View.Election.class, View.Candidate.class})
     private String name;
 
-    @Getter
     @Setter
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "start_date")
     @JsonView({View.Election.class, View.Candidate.class})
     private LocalDate startDate;
 
-    @Getter
     @Setter
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "finish_date")
@@ -51,22 +48,15 @@ public class Election implements Serializable {
 
     @JsonView(View.Election.class)
     @OneToMany(mappedBy = "election", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private final List<ElectionPosition> electionPositions = new ArrayList<>();
+    private List<ElectionPosition> electionPositions;
 
-    public Election(String name, LocalDate startDate, LocalDate finishDate) {
+    @Builder
+    public Election(String name, LocalDate startDate, LocalDate finishDate, @Singular List<ElectionPosition> electionPositions) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
-    }
-
-    public void addElectionPosition(ElectionPosition electionPosition) {
-        this.electionPositions.add(electionPosition);
-        electionPosition.setElection(this);
-    }
-
-    public void addAllElectionPositions(List<ElectionPosition> electionPositions) {
-        this.electionPositions.addAll(electionPositions);
-        electionPositions.forEach(electionPosition -> electionPosition.setElection(this));
+        this.electionPositions = electionPositions;
+        this.electionPositions.forEach(electionPosition -> electionPosition.setElection(this));
     }
 
     public List<ElectionPosition> getElectionPositions() { return Collections.unmodifiableList(this.electionPositions); }

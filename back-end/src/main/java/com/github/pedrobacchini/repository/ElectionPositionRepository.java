@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.repository;
 
-import com.github.pedrobacchini.dto.ElectionPositionSummary;
+import com.github.pedrobacchini.dto.ElectionPositionSelection;
 import com.github.pedrobacchini.entity.Election;
 import com.github.pedrobacchini.entity.ElectionPosition;
 import org.springframework.stereotype.Repository;
@@ -12,5 +12,5 @@ import java.util.List;
 public interface ElectionPositionRepository extends UuidRepository<ElectionPosition> {
 
     @Transactional(readOnly = true)
-    List<ElectionPositionSummary> findAllByElection(Election election);
+    List<ElectionPositionSelection> findAllByElection(Election election);
 }

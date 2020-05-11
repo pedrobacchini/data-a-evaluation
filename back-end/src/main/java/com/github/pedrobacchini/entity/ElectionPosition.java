@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @ToString
 @Table(name = "election_positions")
 @NoArgsConstructor //For Hibernate
@@ -29,12 +30,10 @@ public class ElectionPosition implements Serializable {
     private UUID uuid;
 
     @NotNull
-    @Setter
     @Column(nullable = false, length = 100)
     @JsonView({View.Election.class, View.Candidate.class})
     private String name;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "election_uuid")
     @JsonView(View.Candidate.class)

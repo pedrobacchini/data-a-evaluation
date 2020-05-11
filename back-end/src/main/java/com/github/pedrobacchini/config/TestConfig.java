@@ -7,7 +7,6 @@ import com.github.pedrobacchini.repository.CandidateRepository;
 import com.github.pedrobacchini.repository.ElectionRepository;
 import com.github.pedrobacchini.service.CandidateService;
 import com.github.pedrobacchini.service.ImageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,17 +36,29 @@ public class TestConfig {
             ElectionPosition sindico = new ElectionPosition("Sindico");
             ElectionPosition subsindico = new ElectionPosition("Sub-Sindico");
 
-            Election eleicoes2020 = new Election("Eleições 2020",
-                    LocalDate.of(2020, 10, 4), LocalDate.of(2020, 10, 25));
-            eleicoes2020.addAllElectionPositions(Arrays.asList(prefeito, vereador));
+            Election eleicoes2020 = Election.builder()
+                    .name("Eleições 2020")
+                    .startDate(LocalDate.of(2020, 10, 4))
+                    .finishDate(LocalDate.of(2020, 10, 25))
+                    .electionPosition(prefeito)
+                    .electionPosition(vereador)
+                    .build();
 
-            Election eleicoeslideres = new Election("Eleições Lideres",
-                    LocalDate.of(2020, 3, 31), LocalDate.of(2020, 4, 20));
-            eleicoeslideres.addAllElectionPositions(Arrays.asList(programadorLider, artistaLider));
+            Election eleicoeslideres = Election.builder()
+                    .name("Eleições Lideres")
+                    .startDate(LocalDate.of(2020, 3, 31))
+                    .finishDate(LocalDate.of(2020, 4, 20))
+                    .electionPosition(programadorLider)
+                    .electionPosition(artistaLider)
+                    .build();
 
-            Election eleicaoCodomino = new Election("Eleições Condominio 2019",
-                    LocalDate.of(2019, 1, 12), LocalDate.of(2019, 3, 1));
-            eleicaoCodomino.addAllElectionPositions(Arrays.asList(sindico, subsindico));
+            Election eleicaoCodomino = Election.builder()
+                    .name("Eleições Condominio 2019")
+                    .startDate(LocalDate.of(2019, 1, 12))
+                    .finishDate(LocalDate.of(2019, 3, 1))
+                    .electionPosition(sindico)
+                    .electionPosition(subsindico)
+                    .build();
 
             electionRepository.saveAll(Arrays.asList(eleicoes2020, eleicoeslideres, eleicaoCodomino));
 

@@ -1,6 +1,6 @@
 package com.github.pedrobacchini.service;
 
-import com.github.pedrobacchini.dto.ElectionSummary;
+import com.github.pedrobacchini.dto.ElectionSelection;
 import com.github.pedrobacchini.entity.Election;
 
 import java.util.List;
@@ -8,11 +8,9 @@ import java.util.UUID;
 
 public interface ElectionService {
 
-    List<Election> getAll();
-
     List<Election> getAllAvailable();
 
-    List<ElectionSummary> getAllAvailableSummary();
+    List<ElectionSelection> getAllAvailableSelection();
 
     List<Election> getAllStarted();
 

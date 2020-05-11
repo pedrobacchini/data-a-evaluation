@@ -41,7 +41,7 @@ export class CandidateFormComponent implements OnInit {
               private candidateService: CandidateService,
               private errorHandler: ErrorHandlerService,
               private messageService: MessageService) {
-    this.electionService.getAllAvailableSummary()
+    this.electionService.getAllAvailableSelection()
       .subscribe(elections => {
         this.elections = elections.map(election => ({label: election.name, value: election.uuid}));
       }, exception => this.errorHandler.handle(exception));
@@ -78,9 +78,9 @@ export class CandidateFormComponent implements OnInit {
   }
 
   setElection(uuid: string) {
-    this.electionService.getAllElectionPositionsSummary(uuid)
-      .subscribe(electionPositionsResume => {
-        this.electionPositions = electionPositionsResume.map(e => ({label: e.name, value: e.uuid}));
+    this.electionService.getAllElectionPositionsSelection(uuid)
+      .subscribe(electionPositionsSelection => {
+        this.electionPositions = electionPositionsSelection.map(e => ({label: e.name, value: e.uuid}));
       }, exception => this.errorHandler.handle(exception));
   }
 
