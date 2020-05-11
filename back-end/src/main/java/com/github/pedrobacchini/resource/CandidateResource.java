@@ -2,10 +2,11 @@ package com.github.pedrobacchini.resource;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pedrobacchini.dto.CandidateDTO;
+import com.github.pedrobacchini.dto.CandidateRetrieve;
 import com.github.pedrobacchini.entity.Candidate;
-import com.github.pedrobacchini.entity.ElectionPosition;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
 import com.github.pedrobacchini.json.View;
+import com.github.pedrobacchini.mapper.CandidateMapper;
 import com.github.pedrobacchini.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,31 +30,36 @@ public class CandidateResource {
 
     private final CandidateService candidateService;
     private final ApplicationEventPublisher publisher;
+    private final CandidateMapper candidateMapper;
 
     @GetMapping
     @JsonView(View.Candidate.class)
     public List<Candidate> getAll() { return candidateService.getAll(); }
 
     @GetMapping(path = "/{uuid}")
-    @JsonView(View.Candidate.class)
-    public ResponseEntity<Candidate> getById(@PathVariable("uuid") String uuid) {
+    public ResponseEntity<CandidateRetrieve> getById(@PathVariable("uuid") String uuid) {
         Candidate candidate = candidateService.getById(UUID.fromString(uuid));
-        return ResponseEntity.ok(candidate);
+        CandidateRetrieve candidateRetrieve = candidateMapper.fromEntity(candidate);
+        return ResponseEntity.ok(candidateRetrieve);
     }
 
     @PostMapping
-    @JsonView(View.Candidate.class)
-    public ResponseEntity<Candidate> create(@RequestBody @Valid CandidateDTO candidateDTO, HttpServletResponse response) {
-        Candidate createdCandidate = candidateService.create(fromDTO(candidateDTO));
-        publisher.publishEvent(new ResourceCreatedEvent(this, response, createdCandidate.getUuid()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCandidate);
+    public ResponseEntity<CandidateRetrieve> create(@RequestBody @Valid CandidateDTO candidateDTO,
+                                                    HttpServletResponse response) {
+        Candidate candidate = candidateMapper.fromDTO(candidateDTO);
+        candidate = candidateService.create(candidate);
+        CandidateRetrieve candidateRetrieve = candidateMapper.fromEntity(candidate);
+        publisher.publishEvent(new ResourceCreatedEvent(this, response, candidate.getUuid()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(candidateRetrieve);
     }
 
     @PutMapping(value = "/{uuid}")
-    @JsonView(View.Candidate.class)
-    public ResponseEntity<Candidate> update(@PathVariable("uuid") String uuid, @RequestBody @Valid CandidateDTO candidateDTO) {
-        Candidate candidate = candidateService.update(UUID.fromString(uuid), fromDTO(candidateDTO));
-        return ResponseEntity.ok(candidate);
+    public ResponseEntity<CandidateRetrieve> update(@PathVariable("uuid") String uuid,
+                                                    @RequestBody @Valid CandidateDTO candidateDTO) {
+        Candidate candidate = candidateMapper.fromDTO(candidateDTO);
+        candidate = candidateService.update(UUID.fromString(uuid), candidate);
+        CandidateRetrieve candidateRetrieve = candidateMapper.fromEntity(candidate);
+        return ResponseEntity.ok(candidateRetrieve);
     }
 
     @DeleteMapping(value = "/{uuid}")
@@ -64,14 +70,10 @@ public class CandidateResource {
 
     @PutMapping("/{uuid}/picture")
     public ResponseEntity<Void> uploadProfilePicture(@PathVariable("uuid") String uuid,
-                                                     @RequestParam(name = "file") MultipartFile file) throws IOException, URISyntaxException {
+                                                     @RequestParam(name = "file") MultipartFile file)
+            throws IOException, URISyntaxException {
         Candidate candidate = candidateService.getById(UUID.fromString(uuid));
         String path = candidateService.uploadProfilePicture(candidate, file);
         return ResponseEntity.created(new URI(path)).build();
-    }
-
-    private Candidate fromDTO(CandidateDTO candidateDTO) {
-        ElectionPosition electionPosition = new ElectionPosition(candidateDTO.getElectionPosition().getUuid());
-        return new Candidate(candidateDTO.getName(), electionPosition);
     }
 }

@@ -1,8 +1,6 @@
 package com.github.pedrobacchini.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.github.pedrobacchini.json.View;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.BeanUtils;
@@ -26,27 +24,22 @@ public class Election implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @JsonView({View.Election.class, View.Candidate.class})
     private UUID uuid;
 
     @Setter
     @Column(nullable = false, length = 100)
-    @JsonView({View.Election.class, View.Candidate.class})
     private String name;
 
     @Setter
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "start_date")
-    @JsonView({View.Election.class, View.Candidate.class})
     private LocalDate startDate;
 
     @Setter
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(nullable = false, name = "finish_date")
-    @JsonView({View.Election.class, View.Candidate.class})
     private LocalDate finishDate;
 
-    @JsonView(View.Election.class)
     @OneToMany(mappedBy = "election", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ElectionPosition> electionPositions;
 
