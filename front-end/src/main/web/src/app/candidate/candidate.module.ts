@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/components/button/button';
 import { CardModule } from 'primeng/components/card/card';
 import { FileUploadModule } from 'primeng/components/fileupload/fileupload';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
+import { DialogModule } from 'primeng/components/dialog/dialog';
 
 import { CandidateSearchComponent } from './candidate-search/candidate-search.component';
 import { CandidateFormComponent } from './candidate-form/candidate-form.component';
@@ -32,7 +33,8 @@ import { LoadingModule } from 'ngx-loading';
     CardModule,
     LoadingModule,
     FileUploadModule,
-    TooltipModule
+    TooltipModule,
+    DialogModule
   ]
 })
 export class CandidateModule {

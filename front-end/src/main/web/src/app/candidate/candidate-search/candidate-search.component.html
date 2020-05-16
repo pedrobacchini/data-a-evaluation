@@ -1,6 +1,8 @@
-<app-candidate-form [editCandidate]="editCandidate.uuid" (candidateChange)="candidateChange($event)"></app-candidate-form>
 <div class="container">
   <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Candidatos</h1>
+    </div>
     <div class="ui-g-12">
       <p-table #dt [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
         <ng-template pTemplate="caption">
@@ -12,6 +14,7 @@
                    placeholder="Pesquisar..."
                    size="10"
                    style="width:auto" type="text">
+            <button class="button-pad" label="Novo Candidato" pButton (click)="candidateFrom.add()" type="button"></button>
           </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -46,7 +49,7 @@
                       pButton
                       pTooltip="Editar"
                       tooltipPosition="top"
-                      (click)="editCandidate = rowData">
+                      (click)="candidateFrom.find(rowData.uuid)">
               </button>
               <button icon="pi pi-trash"
                       pButton
@@ -71,4 +74,5 @@
     </div>
   </div>
 </div>
+<app-candidate-form (onSave)="candidateChange($event)"></app-candidate-form>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>

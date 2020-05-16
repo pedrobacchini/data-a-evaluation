@@ -6,10 +6,6 @@ import { Observable } from 'rxjs';
 import { UtilsService } from '../core/utils.service';
 import { Candidate } from './candidate.class';
 
-export class UploadUrl {
-  url: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -34,10 +30,10 @@ export class CandidateService {
     return this.http.post<Candidate>(this.candidateUrl, candidate);
   }
 
-  uploadPicture(uuid: string, file: File, url: string): Observable<UploadUrl> {
+  uploadPicture(uuid: string, file: File, url: string): Observable<void> {
     const formData: FormData = new FormData();
     formData.append('file', this.utilsService.dataURItoBlob(url, file.type), file.name);
-    return this.http.put<UploadUrl>(`${this.candidateUrl}/${uuid}/picture`, formData);
+    return this.http.put<void>(`${this.candidateUrl}/${uuid}/picture`, formData);
   }
 
   delete(uuid: string): Observable<void> {

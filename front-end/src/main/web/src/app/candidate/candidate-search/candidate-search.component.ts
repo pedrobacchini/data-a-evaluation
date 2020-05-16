@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
@@ -6,6 +6,8 @@ import { ConfirmationService, MessageService } from 'primeng/components/common/a
 import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { CandidateService } from '../candidate.service';
+import { CandidateFormComponent } from '../candidate-form/candidate-form.component';
+import { Candidate } from '../candidate.class';
 
 class CandidateTable {
   uuid: string;
@@ -22,10 +24,10 @@ class CandidateTable {
 })
 export class CandidateSearchComponent implements OnInit {
 
+  @ViewChild(CandidateFormComponent) candidateFrom: CandidateFormComponent;
   candidatesTable: CandidateTable[] = [];
   rowElectionGroup: any;
   rowElectionPositionGroup: any;
-  editCandidate: CandidateTable = new CandidateTable();
   loading;
 
   constructor(private electionService: ElectionService,
@@ -90,10 +92,11 @@ export class CandidateSearchComponent implements OnInit {
     }
   }
 
-  candidateChange(isChange: boolean) {
-    if (isChange) {
+  candidateChange(candidate: Candidate) {
+    console.log(candidate);
+    // if (candidate) {
       this.ngOnInit();
-    }
+    // }
   }
 
   sePictureError(event) {

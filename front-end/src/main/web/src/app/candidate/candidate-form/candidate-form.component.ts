@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -17,6 +17,7 @@ import { Candidate } from '../candidate.class';
 })
 export class CandidateFormComponent implements OnInit {
 
+  displayModal: boolean;
   @ViewChild('upload') private upload: ElementRef;
   private fileToUpload: File = null;
   candidate: Candidate = new Candidate();
@@ -24,30 +25,19 @@ export class CandidateFormComponent implements OnInit {
   electionPositions = [];
   loading;
 
-  @Output() candidateChange: EventEmitter<boolean> = new EventEmitter();
-
-  @Input() set editCandidate(uuid: string) {
-    if (uuid) {
-      this.loading = true;
-      this.candidateService.find(uuid)
-        .pipe(finalize(() => this.loading = false))
-        .subscribe(candidate => {
-          this.candidate = candidate;
-        }, exception => this.errorHandler.handle(exception));
-    }
-  }
+  @Output() onSave: EventEmitter<Candidate> = new EventEmitter();
 
   constructor(private electionService: ElectionService,
               private candidateService: CandidateService,
               private errorHandler: ErrorHandlerService,
               private messageService: MessageService) {
+  }
+
+  ngOnInit() {
     this.electionService.getAllAvailableSelection()
       .subscribe(elections => {
         this.elections = elections.map(election => ({label: election.name, value: election.uuid}));
       }, exception => this.errorHandler.handle(exception));
-  }
-
-  ngOnInit() {
   }
 
   save(f: NgForm) {
@@ -62,13 +52,14 @@ export class CandidateFormComponent implements OnInit {
           } else {
             return of(null);
           }
-        })
+        }, (candidate) => candidate)
       )
-      .subscribe(() => {
+      .subscribe((candidate: Candidate) => {
         this.fileToUpload = undefined;
-        this.candidateChange.emit(true);
+        this.onSave.emit(candidate);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
         this.reset(f);
+        this.displayModal = false;
       }, exception => this.errorHandler.handle(exception));
   }
 
@@ -100,5 +91,21 @@ export class CandidateFormComponent implements OnInit {
 
   sePictureError(event) {
     event.target.src = '/assets/images/avatars/avatar_2x.png';
+  }
+
+  add() {
+    this.displayModal = true;
+  }
+
+  find(uuid: string) {
+    if (uuid) {
+      this.displayModal = true;
+      this.loading = true;
+      this.candidateService.find(uuid)
+        .pipe(finalize(() => this.loading = false))
+        .subscribe(candidate => {
+          this.candidate = candidate;
+        }, exception => this.errorHandler.handle(exception));
+    }
   }
 }
