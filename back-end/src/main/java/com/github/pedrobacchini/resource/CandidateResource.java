@@ -1,11 +1,9 @@
 package com.github.pedrobacchini.resource;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.github.pedrobacchini.dto.CandidateDTO;
 import com.github.pedrobacchini.dto.CandidateRetrieve;
 import com.github.pedrobacchini.entity.Candidate;
 import com.github.pedrobacchini.event.ResourceCreatedEvent;
-import com.github.pedrobacchini.json.View;
 import com.github.pedrobacchini.mapper.CandidateMapper;
 import com.github.pedrobacchini.service.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +32,10 @@ public class CandidateResource {
     private final CandidateMapper candidateMapper;
 
     @GetMapping
-    @JsonView(View.Candidate.class)
-    public List<Candidate> getAll() { return candidateService.getAll(); }
+    public List<CandidateRetrieve> getAll() {
+        List<Candidate> candidates = candidateService.getAll();
+        return candidates.stream().map(candidateMapper::fromEntity).collect(Collectors.toList());
+    }
 
     @GetMapping(path = "/{uuid}")
     public ResponseEntity<CandidateRetrieve> getById(@PathVariable("uuid") String uuid) {
