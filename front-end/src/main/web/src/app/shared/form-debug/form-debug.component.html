@@ -1,0 +1,8 @@
+<div style="margin-top: 20px" *ngIf="form && showDebug">
+  <div>Form details</div>
+  <pre>Form valid: {{ form.valid }}</pre>
+  <pre>Form dirty: {{ form.dirty }}</pre>
+  <pre>Form pristine: {{ form.pristine }}</pre>
+  <pre>Form touched: {{ form.touched }}</pre>
+  <pre>Values: <br>{{ form.value | json }}</pre>
+</div>
