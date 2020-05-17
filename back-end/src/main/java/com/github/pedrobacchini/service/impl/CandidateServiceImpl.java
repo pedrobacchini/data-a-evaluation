@@ -47,10 +47,10 @@ public class CandidateServiceImpl implements CandidateService {
     public Candidate create(Candidate candidate) { return candidateRepository.save(candidate); }
 
     @Override
-    public Candidate update(UUID uuid, Candidate candidate) {
+    public void update(UUID uuid, Candidate candidate) {
         Candidate savedCandidate = getById(uuid);
         BeanUtils.copyProperties(candidate, savedCandidate);
-        return candidateRepository.save(savedCandidate);
+        candidateRepository.save(savedCandidate);
     }
 
     @Override

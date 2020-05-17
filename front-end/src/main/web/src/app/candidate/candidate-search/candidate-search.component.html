@@ -4,7 +4,7 @@
       <h1>Candidatos</h1>
     </div>
     <div class="ui-g-12">
-      <p-table #dt [value]="candidatesTable" sortField="electionName" sortMode="single" (onSort)="onSort()">
+      <p-table #dt [value]="candidatesAtTheTable()" sortField="electionName" sortMode="single" (onSort)="onSort()">
         <ng-template pTemplate="caption">
           <div style="text-align: right">
             <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
@@ -68,11 +68,12 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-          {{candidatesTable ? candidatesTable.length : 0}} Candidatos
+          {{candidatesAtTheTable() ? candidatesAtTheTable().length : 0}} Candidatos
         </ng-template>
       </p-table>
     </div>
   </div>
+  <app-object-debug [object]="candidatesAtTheTable()"></app-object-debug>
 </div>
 <app-candidate-form (onSave)="candidateChange($event)"></app-candidate-form>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>

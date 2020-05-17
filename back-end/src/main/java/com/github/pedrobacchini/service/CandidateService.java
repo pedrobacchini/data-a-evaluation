@@ -15,7 +15,7 @@ public interface CandidateService {
 
     Candidate create(Candidate candidate);
 
-    Candidate update(UUID uuid, Candidate candidate);
+    void update(UUID uuid, Candidate candidate);
 
     void delete(UUID uuid);
 

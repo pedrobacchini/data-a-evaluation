@@ -45,22 +45,20 @@ public class CandidateResource {
     }
 
     @PostMapping
-    public ResponseEntity<CandidateRetrieve> create(@RequestBody @Valid CandidateDTO candidateDTO,
+    public ResponseEntity<Void> create(@RequestBody @Valid CandidateDTO candidateDTO,
                                                     HttpServletResponse response) {
         Candidate candidate = candidateMapper.fromDTO(candidateDTO);
         candidate = candidateService.create(candidate);
-        CandidateRetrieve candidateRetrieve = candidateMapper.fromEntity(candidate);
         publisher.publishEvent(new ResourceCreatedEvent(this, response, candidate.getUuid()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(candidateRetrieve);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping(value = "/{uuid}")
-    public ResponseEntity<CandidateRetrieve> update(@PathVariable("uuid") String uuid,
+    public ResponseEntity<Void> update(@PathVariable("uuid") String uuid,
                                                     @RequestBody @Valid CandidateDTO candidateDTO) {
         Candidate candidate = candidateMapper.fromDTO(candidateDTO);
-        candidate = candidateService.update(UUID.fromString(uuid), candidate);
-        CandidateRetrieve candidateRetrieve = candidateMapper.fromEntity(candidate);
-        return ResponseEntity.ok(candidateRetrieve);
+        candidateService.update(UUID.fromString(uuid), candidate);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{uuid}")

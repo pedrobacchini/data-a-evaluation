@@ -25,7 +25,7 @@ class CandidateTable {
 export class CandidateSearchComponent implements OnInit {
 
   @ViewChild(CandidateFormComponent) candidateFrom: CandidateFormComponent;
-  candidatesTable: CandidateTable[] = [];
+  mapCandidatesTable = new Map<string, CandidateTable>();
   rowElectionGroup: any;
   rowElectionPositionGroup: any;
   loading;
@@ -38,13 +38,13 @@ export class CandidateSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.candidatesTable = [];
+    this.mapCandidatesTable = new Map<string, CandidateTable>();
     this.electionService.getAllAvailable()
       .subscribe(elections => {
         elections.forEach(election => {
           election.electionPositions.forEach(electionPosition => {
             electionPosition.candidates.forEach(candidate => {
-              this.candidatesTable.push({
+              this.mapCandidatesTable.set(candidate.uuid, {
                 uuid: candidate.uuid,
                 electionName: election.name,
                 electionPositionName: electionPosition.name,
@@ -54,27 +54,28 @@ export class CandidateSearchComponent implements OnInit {
             });
           });
         });
-        this.updateRowGroupMetaDataTable();
+        this.initRowGroupMetaDataTable();
       }, exception => this.errorHandler.handle(exception));
   }
 
   onSort() {
-    this.updateRowGroupMetaDataTable();
+    this.initRowGroupMetaDataTable();
   }
 
-  updateRowGroupMetaDataTable() {
+  private initRowGroupMetaDataTable() {
     this.rowElectionGroup = {};
     this.rowElectionPositionGroup = {};
-    if (this.candidatesTable) {
-      for (let i = 0; i < this.candidatesTable.length; i++) {
-        const rowData = this.candidatesTable[i];
+    const candidatesTable = this.candidatesAtTheTable();
+    if (candidatesTable) {
+      for (let i = 0; i < candidatesTable.length; i++) {
+        const rowData = candidatesTable[i];
         const electionName = rowData.electionName;
         const electionPositionName = electionName.concat(rowData.electionPositionName);
         if (i === 0) {
           this.rowElectionGroup[electionName] = {index: 0, size: 1};
           this.rowElectionPositionGroup[electionPositionName] = {index: 0, size: 1};
         } else {
-          const previousElection = this.candidatesTable[i - 1];
+          const previousElection = candidatesTable[i - 1];
           const previousElectionName = previousElection.electionName;
           const previousElectionPositionName = previousElectionName.concat(previousElection.electionPositionName);
           if (electionName === previousElectionName) {
@@ -90,14 +91,30 @@ export class CandidateSearchComponent implements OnInit {
         }
       }
     }
+    this.sortMapCandidateTable();
   }
 
   candidateChange(candidate: Candidate) {
-    // TODO implementar atualizar da tabela sem reiniciar o componente
-    console.log(candidate);
-    // if (candidate) {
-      this.ngOnInit();
-    // }
+    this.mapCandidatesTable.set(candidate.uuid, {
+      uuid: candidate.uuid,
+      electionName: candidate.electionPosition.election.name,
+      electionPositionName: candidate.electionPosition.name,
+      candidateName: candidate.name,
+      picture: candidate.picture
+    });
+    this.sortMapCandidateTable();
+  }
+
+  private sortMapCandidateTable() {
+    this.mapCandidatesTable = new Map(
+      Array.from(this.mapCandidatesTable)
+        .sort((a, b) => {
+          const aCandidateTable = a[1];
+          const bCandidateTable = b[1];
+          return aCandidateTable.electionPositionName.localeCompare(bCandidateTable.electionPositionName) ||
+            aCandidateTable.candidateName.localeCompare(bCandidateTable.candidateName);
+        })
+    );
   }
 
   sePictureError(event) {
@@ -112,10 +129,14 @@ export class CandidateSearchComponent implements OnInit {
         this.candidateService.delete(candidateTable.uuid)
           .pipe(finalize(() => this.loading = false))
           .subscribe(() => {
-            this.ngOnInit();
+            this.mapCandidatesTable.delete(candidateTable.uuid);
             this.messageService.add({severity: 'success', detail: 'Removido com sucesso'});
           }, exception => this.errorHandler.handle(exception));
       }
     });
+  }
+
+  candidatesAtTheTable() {
+    return Array.from(this.mapCandidatesTable.values());
   }
 }

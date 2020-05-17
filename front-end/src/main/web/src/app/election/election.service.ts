@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 
 import { Election } from './election.class';
 import { ElectionStarted } from './election-started.class';
+import { ElectionSelection } from './election-selection.class';
+import { ElectionPositionSelection } from './election-position-selection.class';
 
 @Injectable({
   providedIn: 'root'
