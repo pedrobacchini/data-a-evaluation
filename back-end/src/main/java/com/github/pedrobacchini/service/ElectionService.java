@@ -18,7 +18,7 @@ public interface ElectionService {
 
     Election create(Election election);
 
-    Election update(UUID uuid, Election election);
+    void update(UUID uuid, Election election);
 
     void delete(UUID uuid);
 }

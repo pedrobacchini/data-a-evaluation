@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map, flatMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -24,11 +25,18 @@ export class ElectionService {
   }
 
   private update(uuid: string, election: Election): Observable<Election> {
-    return this.http.put<Election>(`${this.electionUrl}/${uuid}`, election);
+    return this.http.put<void>(`${this.electionUrl}/${uuid}`, election)
+      .pipe(map(() => election));
   }
 
   private create(election: Election): Observable<Election> {
-    return this.http.post<Election>(this.electionUrl, election);
+    return this.http.post(this.electionUrl, election, {observe: 'response'})
+      .pipe(
+        flatMap((response) => {
+          const location = response.headers.get('Location');
+          return this.http.get<Election>(location);
+        })
+      );
   }
 
   getAllStarted(): Observable<ElectionStarted[]> {

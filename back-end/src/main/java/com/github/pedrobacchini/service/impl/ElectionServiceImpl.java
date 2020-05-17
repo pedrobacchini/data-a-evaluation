@@ -49,7 +49,7 @@ public class ElectionServiceImpl implements ElectionService {
     public Election create(Election election) { return electionRepository.save(election); }
 
     @Override
-    public Election update(UUID uuid, Election election) {
+    public void update(UUID uuid, Election election) {
         try {
             Election savedElection = getById(uuid);
 
@@ -58,7 +58,7 @@ public class ElectionServiceImpl implements ElectionService {
                         .getMessage("election-started-cannot-updated"));
 
             savedElection.updateData(election);
-            return electionRepository.save(savedElection);
+            electionRepository.save(savedElection);
         } catch (DataIntegrityViolationException e) {
             throw new IntegrityViolationException(localeMessageSource
                     .getMessage("not-delete-election-position-with-candidate"));

@@ -57,20 +57,18 @@ public class ElectionResource {
     }
 
     @PostMapping
-    public ResponseEntity<ElectionRetrieve> create(@RequestBody @Valid ElectionDTO electionDTO, HttpServletResponse response) {
+    public ResponseEntity<Void> create(@RequestBody @Valid ElectionDTO electionDTO, HttpServletResponse response) {
         Election election = electionMapper.fromDTO(electionDTO);
         election = electionService.create(election);
-        ElectionRetrieve electionRetrieve = electionMapper.fromEntity(election);
         publisher.publishEvent(new ResourceCreatedEvent(this, response, election.getUuid()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(electionRetrieve);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping(value = "/{uuid}")
-    public ResponseEntity<ElectionRetrieve> update(@PathVariable("uuid") String uuid, @RequestBody @Valid ElectionDTO electionDTO) {
+    public ResponseEntity<Void> update(@PathVariable("uuid") String uuid, @RequestBody @Valid ElectionDTO electionDTO) {
         Election election = electionMapper.fromDTO(electionDTO);
-        election = electionService.update(UUID.fromString(uuid), election);
-        ElectionRetrieve electionRetrieve = electionMapper.fromEntity(election);
-        return ResponseEntity.ok(electionRetrieve);
+        electionService.update(UUID.fromString(uuid), election);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{uuid}")
