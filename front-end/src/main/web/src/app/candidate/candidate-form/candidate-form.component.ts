@@ -120,5 +120,7 @@ export class CandidateFormComponent implements OnInit {
   setElectionPositions(electionPositionSelection: ElectionPositionSelection) {
     this.candidate.electionPosition.uuid = electionPositionSelection.uuid;
     this.candidate.electionPosition.name = electionPositionSelection.name;
+    this.candidate.electionPosition.election.uuid = this.electionSelected.uuid;
+    this.candidate.electionPosition.election.name = this.electionSelected.name;
   }
 }

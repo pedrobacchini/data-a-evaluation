@@ -25,7 +25,7 @@ class CandidateTable {
 export class CandidateSearchComponent implements OnInit {
 
   @ViewChild(CandidateFormComponent) candidateFrom: CandidateFormComponent;
-  mapCandidatesTable = new Map<string, CandidateTable>();
+  candidatesTable: CandidateTable[];
   rowElectionGroup: any;
   rowElectionPositionGroup: any;
   loading;
@@ -38,13 +38,13 @@ export class CandidateSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mapCandidatesTable = new Map<string, CandidateTable>();
+    this.candidatesTable = [];
     this.electionService.getAllAvailable()
       .subscribe(elections => {
         elections.forEach(election => {
           election.electionPositions.forEach(electionPosition => {
             electionPosition.candidates.forEach(candidate => {
-              this.mapCandidatesTable.set(candidate.uuid, {
+              this.candidatesTable.push({
                 uuid: candidate.uuid,
                 electionName: election.name,
                 electionPositionName: electionPosition.name,
@@ -63,19 +63,19 @@ export class CandidateSearchComponent implements OnInit {
   }
 
   private initRowGroupMetaDataTable() {
+    this.sortCandidatesTable();
     this.rowElectionGroup = {};
     this.rowElectionPositionGroup = {};
-    const candidatesTable = this.candidatesAtTheTable();
-    if (candidatesTable) {
-      for (let i = 0; i < candidatesTable.length; i++) {
-        const rowData = candidatesTable[i];
+    if (this.candidatesTable) {
+      for (let i = 0; i < this.candidatesTable.length; i++) {
+        const rowData = this.candidatesTable[i];
         const electionName = rowData.electionName;
         const electionPositionName = electionName.concat(rowData.electionPositionName);
         if (i === 0) {
           this.rowElectionGroup[electionName] = {index: 0, size: 1};
           this.rowElectionPositionGroup[electionPositionName] = {index: 0, size: 1};
         } else {
-          const previousElection = candidatesTable[i - 1];
+          const previousElection = this.candidatesTable[i - 1];
           const previousElectionName = previousElection.electionName;
           const previousElectionPositionName = previousElectionName.concat(previousElection.electionPositionName);
           if (electionName === previousElectionName) {
@@ -91,30 +91,32 @@ export class CandidateSearchComponent implements OnInit {
         }
       }
     }
-    this.sortMapCandidateTable();
   }
 
   candidateChange(candidate: Candidate) {
-    this.mapCandidatesTable.set(candidate.uuid, {
+    const candidateTable = {
       uuid: candidate.uuid,
       electionName: candidate.electionPosition.election.name,
       electionPositionName: candidate.electionPosition.name,
       candidateName: candidate.name,
       picture: candidate.picture
-    });
-    this.sortMapCandidateTable();
+    };
+    const index = this.candidatesTable.findIndex(c => c.uuid === candidate.uuid);
+    console.log(index);
+    if (index === -1) {
+      this.candidatesTable.push(candidateTable);
+    } else {
+      this.candidatesTable[index] = candidateTable;
+    }
+    this.initRowGroupMetaDataTable();
   }
 
-  private sortMapCandidateTable() {
-    this.mapCandidatesTable = new Map(
-      Array.from(this.mapCandidatesTable)
-        .sort((a, b) => {
-          const aCandidateTable = a[1];
-          const bCandidateTable = b[1];
-          return aCandidateTable.electionPositionName.localeCompare(bCandidateTable.electionPositionName) ||
-            aCandidateTable.candidateName.localeCompare(bCandidateTable.candidateName);
-        })
-    );
+  private sortCandidatesTable() {
+    this.candidatesTable.sort((a, b) => {
+      return a.electionName.localeCompare(b.electionName) ||
+        a.electionPositionName.localeCompare(b.electionPositionName) ||
+        a.candidateName.localeCompare(b.candidateName);
+    });
   }
 
   sePictureError(event) {
@@ -129,14 +131,18 @@ export class CandidateSearchComponent implements OnInit {
         this.candidateService.delete(candidateTable.uuid)
           .pipe(finalize(() => this.loading = false))
           .subscribe(() => {
-            this.mapCandidatesTable.delete(candidateTable.uuid);
+            this.removeCandidate(candidateTable);
             this.messageService.add({severity: 'success', detail: 'Removido com sucesso'});
           }, exception => this.errorHandler.handle(exception));
       }
     });
   }
 
-  candidatesAtTheTable() {
-    return Array.from(this.mapCandidatesTable.values());
+  private removeCandidate(candidate: CandidateTable) {
+    const index = this.candidatesTable.findIndex(c => c.uuid === candidate.uuid);
+    if (index > -1) {
+      this.candidatesTable.splice(index, 1);
+    }
+    this.initRowGroupMetaDataTable();
   }
 }

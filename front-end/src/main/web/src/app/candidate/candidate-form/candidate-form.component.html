@@ -34,7 +34,7 @@
             <p-dropdown name="electionSelected" [options]="elections"
                         placeholder="Selecione uma eleição" [autoWidth]="false"
                         [(ngModel)]="electionSelected"
-                        (onChange)="loadElectionPositions($event.value)"
+                        (onChange)="loadElectionPositions($event.value); electionPositionSelected = undefined"
                         optionLabel="name"
                         required>
             </p-dropdown>
@@ -54,6 +54,9 @@
       </div>
     </form>
   </div>
+<!--  <app-object-debug [object]="candidate"></app-object-debug>-->
+<!--  <app-object-debug [object]="electionSelected"></app-object-debug>-->
+<!--  <app-object-debug [object]="electionPositionSelected"></app-object-debug>-->
   <p-footer>
     <button [disabled]="f.invalid" class="button-pad" icon="pi pi-save" label="Salvar" pButton type="button"
             (click)="save(f)"></button>
