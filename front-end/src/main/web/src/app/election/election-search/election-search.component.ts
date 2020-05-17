@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import { ConfirmationService, MessageService } from 'primeng/components/common/api';
@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/components/common/a
 import { Election } from '../election.class';
 import { ElectionService } from '../election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
+import { ElectionFormComponent } from '../election-form/election-form.component';
 
 @Component({
   selector: 'app-election-search',
@@ -14,9 +15,9 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionSearchComponent implements OnInit {
 
+  @ViewChild(ElectionFormComponent) electionFrom: ElectionFormComponent;
   elections = new Map<string, Election>();
   cols: any[];
-  editElection: Election = new Election();
   loading;
 
   constructor(private electionService: ElectionService,

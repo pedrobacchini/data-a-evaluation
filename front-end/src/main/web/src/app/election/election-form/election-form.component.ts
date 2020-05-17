@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -18,28 +18,20 @@ import { ErrorHandlerService } from '../../core/error-handler.service';
 })
 export class ElectionFormComponent implements OnInit {
 
+  displayModal: boolean;
   minStartDate = new Date();
   minEndDate = new Date();
   ptBR = environment.ptBR;
-  election: Election;
+  election: Election = new Election();
   electionPositions: string[];
   loading;
 
-  @Output() electionChange: EventEmitter<Election> = new EventEmitter();
-
-  @Input() set editElection(election: Election) {
-    this.election = nestedObjectAssign(new Election(), election);
-    this.electionPositions = ElectionFormComponent.getElectionPositionChips(this.election);
-  }
+  @Output() onSave: EventEmitter<Election> = new EventEmitter();
 
   constructor(private electionService: ElectionService,
               private messageService: MessageService,
               private errorHandler: ErrorHandlerService,
               private datePipe: DatePipe) {
-  }
-
-  private static getElectionPositionChips(election: Election) {
-    return election.electionPositions.map(e => e.name);
   }
 
   ngOnInit() {
@@ -53,8 +45,9 @@ export class ElectionFormComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe(election => {
         this.reset(f);
-        this.electionChange.emit(election);
+        this.onSave.emit(election);
         this.messageService.add({severity: 'success', detail: 'Salvo com sucesso'});
+        this.displayModal = false;
       }, exception => this.errorHandler.handle(exception));
   }
 
@@ -78,7 +71,18 @@ export class ElectionFormComponent implements OnInit {
   }
 
   reset(f: NgForm) {
+    this.electionPositions = undefined;
     this.election = new Election();
     f.reset();
+  }
+
+  add() {
+    this.displayModal = true;
+  }
+
+  find(election: Election) {
+    this.displayModal = true;
+    this.election = nestedObjectAssign(new Election(), election);
+    this.electionPositions = election.electionPositions.map(e => e.name);
   }
 }

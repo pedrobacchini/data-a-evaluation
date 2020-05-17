@@ -1,49 +1,47 @@
-<div class="container">
-  <form #f="ngForm" (ngSubmit)="save(f)" autocomplete="off">
-    <div class="ui-g">
-      <div class="ui-g-12">
-        <h1>Eleições</h1>
-      </div>
+<p-dialog header="Nova Eleição" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
+          [draggable]="false" [resizable]="false" (onHide)="reset(f)">
+  <div class="container">
+    <form #f="ngForm" autocomplete="off">
+      <div class="ui-g">
+        <div class="ui-g-8 ui-g-nopad">
+          <div class="ui-g-12 ui-fluid">
+            <label>Name
+              <input [(ngModel)]="election.name" name="name" pInputText required type="text">
+            </label>
+          </div>
 
-      <div class="ui-g-8 ui-g-nopad">
-        <div class="ui-g-12 ui-fluid">
-          <label>Name
-            <input [(ngModel)]="election.name" name="name" pInputText required type="text">
-          </label>
+          <div class="ui-g-12">
+            <label style="display: block">Período</label>
+            <p-calendar [ngModel]="election.startDate" [inputStyle]="{ width: '95px' }"
+                        dateFormat="dd/mm/yy" name="startDate"
+                        required [showIcon]="true" [minDate]="minStartDate" [locale]="ptBR"
+                        (ngModelChange)="setStartDate($event)">
+            </p-calendar>
+            <label> até </label>
+            <p-calendar [(ngModel)]="election.finishDate" [inputStyle]="{ width: '95px' }"
+                        dateFormat="dd/mm/yy" name="finishDate"
+                        required [showIcon]="true" [minDate]="minEndDate" [locale]="ptBR"
+                        (ngModelChange)="setFinishDate($event)">
+            </p-calendar>
+          </div>
+
+          <div class="ui-g-12 ui-fluid">
+            <label>Cargos
+              <p-chips name="electionPositions" [(ngModel)]="electionPositions"
+                       [allowDuplicate]="false" (onAdd)="addElectionPosition($event.value)"
+                       (onRemove)="removeElectionPosition($event.value)">
+              </p-chips>
+            </label>
+          </div>
         </div>
-
-        <div class="ui-g-12">
-          <label style="display: block">Período</label>
-          <p-calendar [ngModel]="election.startDate" [inputStyle]="{ width: '95px' }"
-                      dateFormat="dd/mm/yy" name="startDate"
-                      required [showIcon]="true" [minDate]="minStartDate" [locale]="ptBR"
-                      (ngModelChange)="setStartDate($event)">
-          </p-calendar>
-          <label> até </label>
-          <p-calendar [(ngModel)]="election.finishDate" [inputStyle]="{ width: '95px' }"
-                      dateFormat="dd/mm/yy" name="finishDate"
-                      required [showIcon]="true" [minDate]="minEndDate" [locale]="ptBR"
-                      (ngModelChange)="setFinishDate($event)">
-          </p-calendar>
-        </div>
-
-        <div class="ui-g-12 ui-fluid">
-          <label>Cargos
-            <p-chips name="electionPositions" [(ngModel)]="electionPositions"
-                     [allowDuplicate]="false" (onAdd)="addElectionPosition($event.value)"
-                     (onRemove)="removeElectionPosition($event.value)">
-            </p-chips>
-          </label>
-        </div>
-
       </div>
-
-      <div class="ui-g-8">
-        <button [disabled]="f.invalid" class="button-pad" label="Salvar" pButton type="submit"></button>
-        <button (click)="reset(f)" class="button-pad" label="Limpar" pButton
-                type="button"></button>
-      </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
+  <p-footer>
+    <button [disabled]="f.invalid" class="button-pad" icon="pi pi-save" label="Salvar" pButton type="button"
+            (click)="save(f)"></button>
+    <button (click)="reset(f)" class="button-pad ui-button-secondary" icon="pi pi-times" label="Limpar" pButton
+            type="button"></button>
+  </p-footer>
+</p-dialog>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>

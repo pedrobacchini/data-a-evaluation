@@ -7,7 +7,7 @@ import { CandidateSearchComponent } from './candidate/candidate-search/candidate
 import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'candidate', pathMatch: 'full'},
+  {path: '', redirectTo: 'election', pathMatch: 'full'},
   {path: 'election', component: ElectionSearchComponent},
   {path: 'candidate', component: CandidateSearchComponent},
   {path: 'report', component: ReportComponent},

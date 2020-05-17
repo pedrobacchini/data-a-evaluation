@@ -10,10 +10,13 @@ import { ButtonModule } from 'primeng/components/button/button';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { ChipsModule } from 'primeng/components/chips/chips';
+import { DialogModule } from 'primeng/components/dialog/dialog';
+
 import { LoadingModule } from 'ngx-loading';
 
 import { ElectionFormComponent } from './election-form/election-form.component';
 import { ElectionSearchComponent } from './election-search/election-search.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -33,7 +36,11 @@ import { ElectionSearchComponent } from './election-search/election-search.compo
     CalendarModule,
     TooltipModule,
     ChipsModule,
-    LoadingModule
+    DialogModule,
+
+    LoadingModule,
+
+    SharedModule
   ]
 })
 export class ElectionModule {
