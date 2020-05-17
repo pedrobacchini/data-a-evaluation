@@ -93,6 +93,7 @@ export class CandidateSearchComponent implements OnInit {
   }
 
   candidateChange(candidate: Candidate) {
+    // TODO implementar atualizar da tabela sem reiniciar o componente
     console.log(candidate);
     // if (candidate) {
       this.ngOnInit();

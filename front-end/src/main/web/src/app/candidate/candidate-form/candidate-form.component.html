@@ -1,5 +1,5 @@
 <p-dialog header="Novo Candidato" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
-          [draggable]="false" [resizable]="false">
+          [draggable]="false" [resizable]="false" (onHide)="reset(f)">
   <div class="container">
     <form #f="ngForm" (keyup.enter)="save(f)" autocomplete="off">
       <div class="ui-g">
@@ -31,19 +31,22 @@
 
           <div class="ui-g-12 ui-md-6 ui-fluid">
             <label>Eleição</label>
-            <p-dropdown name="election" [options]="elections"
+            <p-dropdown name="electionSelected" [options]="elections"
                         placeholder="Selecione uma eleição" [autoWidth]="false"
-                        [(ngModel)]="candidate.electionPosition.election.uuid"
-                        (onChange)="setElection($event.value)"
+                        [(ngModel)]="electionSelected"
+                        (onChange)="loadElectionPositions($event.value)"
+                        optionLabel="name"
                         required>
             </p-dropdown>
           </div>
 
           <div class="ui-g-12 ui-md-6 ui-fluid">
             <label>Cargo</label>
-            <p-dropdown name="election" [options]="electionPositions"
+            <p-dropdown name="electionPositionSelected" [options]="electionPositions"
                         placeholder="Selecione um cargo" [autoWidth]="false"
-                        [(ngModel)]="candidate.electionPosition.uuid"
+                        [(ngModel)]="electionPositionSelected"
+                        (onChange)="setElectionPositions($event.value)"
+                        optionLabel="name"
                         required>
             </p-dropdown>
           </div>
@@ -52,7 +55,8 @@
     </form>
   </div>
   <p-footer>
-    <button [disabled]="f.invalid" class="button-pad" icon="pi pi-save" label="Salvar" pButton type="button" (click)="save(f)"></button>
+    <button [disabled]="f.invalid" class="button-pad" icon="pi pi-save" label="Salvar" pButton type="button"
+            (click)="save(f)"></button>
     <button (click)="reset(f)" class="button-pad ui-button-secondary" icon="pi pi-times" label="Limpar" pButton
             type="button"></button>
   </p-footer>

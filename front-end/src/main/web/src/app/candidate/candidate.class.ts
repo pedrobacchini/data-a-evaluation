@@ -14,4 +14,6 @@ export class ElectionPositionCandidate {
 export class ElectionCandidate {
   uuid: string;
   name: string;
+  startDate: string;
+  finishDate: string;
 }

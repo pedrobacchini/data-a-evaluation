@@ -9,6 +9,8 @@ import { ElectionService } from '../../election/election.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
 import { CandidateService } from '../candidate.service';
 import { Candidate } from '../candidate.class';
+import { ElectionSelection } from '../../election/election-selection.class';
+import { ElectionPositionSelection } from '../../election/election-position-selection.class';
 
 @Component({
   selector: 'app-candidate-form',
@@ -21,11 +23,13 @@ export class CandidateFormComponent implements OnInit {
   @ViewChild('upload') private upload: ElementRef;
   private fileToUpload: File = null;
   candidate: Candidate = new Candidate();
-  elections = [];
-  electionPositions = [];
+  elections: ElectionSelection[] = [];
+  electionPositions: ElectionPositionSelection[] = [];
   loading;
 
   @Output() onSave: EventEmitter<Candidate> = new EventEmitter();
+  electionSelected: ElectionSelection;
+  electionPositionSelected: ElectionPositionSelection;
 
   constructor(private electionService: ElectionService,
               private candidateService: CandidateService,
@@ -36,7 +40,7 @@ export class CandidateFormComponent implements OnInit {
   ngOnInit() {
     this.electionService.getAllAvailableSelection()
       .subscribe(elections => {
-        this.elections = elections.map(election => ({label: election.name, value: election.uuid}));
+        this.elections = elections;
       }, exception => this.errorHandler.handle(exception));
   }
 
@@ -47,8 +51,7 @@ export class CandidateFormComponent implements OnInit {
         finalize(() => this.loading = false),
         switchMap((candidate: Candidate) => {
           if (this.fileToUpload) {
-            return this.candidateService
-              .uploadPicture(candidate.uuid, this.fileToUpload, this.candidate.picture);
+            return this.candidateService.uploadPicture(candidate.uuid, this.fileToUpload, this.candidate.picture);
           } else {
             return of(null);
           }
@@ -68,10 +71,10 @@ export class CandidateFormComponent implements OnInit {
     f.reset();
   }
 
-  setElection(uuid: string) {
-    this.electionService.getAllElectionPositionsSelection(uuid)
+  loadElectionPositions(electionSelection: ElectionSelection) {
+    this.electionService.getAllElectionPositionsSelection(electionSelection.uuid)
       .subscribe(electionPositionsSelection => {
-        this.electionPositions = electionPositionsSelection.map(e => ({label: e.name, value: e.uuid}));
+        this.electionPositions = electionPositionsSelection;
       }, exception => this.errorHandler.handle(exception));
   }
 
@@ -105,7 +108,17 @@ export class CandidateFormComponent implements OnInit {
         .pipe(finalize(() => this.loading = false))
         .subscribe(candidate => {
           this.candidate = candidate;
+          this.electionSelected = ElectionSelection.build(candidate.electionPosition.election);
+          this.electionPositionSelected = ElectionPositionSelection.build(candidate.electionPosition);
+          if (this.electionSelected) {
+            this.loadElectionPositions(this.electionSelected);
+          }
         }, exception => this.errorHandler.handle(exception));
     }
+  }
+
+  setElectionPositions(electionPositionSelection: ElectionPositionSelection) {
+    this.candidate.electionPosition.uuid = electionPositionSelection.uuid;
+    this.candidate.electionPosition.name = electionPositionSelection.name;
   }
 }

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  dev: true,
   apiUrl: 'http://localhost:8080/api',
   ptBR: {
     firstDayOfWeek: 0,

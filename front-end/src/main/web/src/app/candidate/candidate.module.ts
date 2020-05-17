@@ -12,9 +12,11 @@ import { FileUploadModule } from 'primeng/components/fileupload/fileupload';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { DialogModule } from 'primeng/components/dialog/dialog';
 
+import { LoadingModule } from 'ngx-loading';
+
 import { CandidateSearchComponent } from './candidate-search/candidate-search.component';
 import { CandidateFormComponent } from './candidate-form/candidate-form.component';
-import { LoadingModule } from 'ngx-loading';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -31,10 +33,13 @@ import { LoadingModule } from 'ngx-loading';
     DropdownModule,
     ButtonModule,
     CardModule,
-    LoadingModule,
     FileUploadModule,
     TooltipModule,
-    DialogModule
+    DialogModule,
+
+    LoadingModule,
+
+    SharedModule
   ]
 })
 export class CandidateModule {
