@@ -25,14 +25,20 @@
         <div class="ui-g-9">
           <div class="ui-g-12 ui-fluid">
             <label>Name
-              <input [(ngModel)]="candidate.name" name="name" pInputText required type="text">
+              <input name="name"
+                     [(ngModel)]="candidate.name"
+                     pInputText
+                     required
+                     type="text">
             </label>
           </div>
 
           <div class="ui-g-12 ui-md-6 ui-fluid">
             <label>Eleição</label>
-            <p-dropdown name="electionSelected" [options]="elections"
-                        placeholder="Selecione uma eleição" [autoWidth]="false"
+            <p-dropdown name="electionSelected"
+                        [options]="elections"
+                        placeholder="Selecione uma eleição"
+                        [autoWidth]="false"
                         [(ngModel)]="electionSelected"
                         (onChange)="loadElectionPositions($event.value); electionPositionSelected = undefined"
                         optionLabel="name"
@@ -42,11 +48,14 @@
 
           <div class="ui-g-12 ui-md-6 ui-fluid">
             <label>Cargo</label>
-            <p-dropdown name="electionPositionSelected" [options]="electionPositions"
-                        placeholder="Selecione um cargo" [autoWidth]="false"
+            <p-dropdown name="electionPositionSelected"
+                        [options]="electionPositions"
+                        [placeholder]="electionSelected ? 'Selecione um cargo' : 'Selecione uma eleição'"
+                        [autoWidth]="false"
                         [(ngModel)]="electionPositionSelected"
                         (onChange)="setElectionPositions($event.value)"
                         optionLabel="name"
+                        [disabled]="!electionSelected"
                         required>
             </p-dropdown>
           </div>
@@ -58,10 +67,21 @@
 <!--  <app-object-debug [object]="electionSelected"></app-object-debug>-->
 <!--  <app-object-debug [object]="electionPositionSelected"></app-object-debug>-->
   <p-footer>
-    <button [disabled]="f.invalid" class="button-pad" icon="pi pi-save" label="Salvar" pButton type="button"
-            (click)="save(f)"></button>
-    <button (click)="reset(f)" class="button-pad ui-button-secondary" icon="pi pi-times" label="Limpar" pButton
-            type="button"></button>
+    <button [disabled]="f.invalid"
+            class="button-pad"
+            icon="pi pi-save"
+            label="Salvar"
+            pButton
+            type="button"
+            (click)="save(f)">
+    </button>
+    <button (click)="reset(f)"
+            class="button-pad ui-button-secondary"
+            icon="pi pi-times"
+            label="Limpar"
+            pButton
+            type="button">
+    </button>
   </p-footer>
 </p-dialog>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '1px', fullScreenBackdrop: true }"></ngx-loading>
