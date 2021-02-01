@@ -23,7 +23,7 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
-    "nested-object-assign": "^1.0.3",
+    "nested-object-assign": "^1.0.4",
     "ngx-loading": "^1.0.14",
     "primeicons": "^2.0.0",
     "primeng": "^8.0.2",
